@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Simple Multer Upload Example</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <form action="/upload" enctype="multipart/form-data" method="post">
+      <input type="file"  name="file-to-upload">
+      <input type="submit" name="upload" disabled = true value="Upload">
+    </form>
+    <script src="js/take_file.js"></script>
+  </body>
+</html>

@@ -1,11 +1,19 @@
 const express = require('express');
+const multer = require('multer');
+const bodyParser = require('body-parser');
+const upload = require('./route/upload.js');
+const path = require('path');
 const app = express();
-const port = process.env.PORT || 3000;
-app.use(express.static('public'));
 
-app.get('/', (req, res) => {
-  res.sendfile('index.html');
-});
-app.listen(port, () => {
-  console.log(`Express web app available at localhost: ${port}`);
+app.use(express.static('public'));
+app.use(bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({ extended: true}));
+
+app.get('/', (req, res) =>{
+  res.sendFile(path.resolve('public/html/home.html'));
+})
+app.use('/upload', upload);
+
+app.listen(3000, () => {
+  console.log('ready');
 });
