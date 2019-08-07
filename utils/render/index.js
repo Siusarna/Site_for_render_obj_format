@@ -9,8 +9,8 @@ const ligts = {
 }
 const options = {
   camera_pos: new vec3(0, -2, 0),
-  width: 300,
-  height: 300,
+  width: 400,
+  height: 400,
   fov: 150,
   backgroundColor: new vec3(0.3, 0, 0.3),
   bias: 0.75,

@@ -1,5 +1,5 @@
 const vec3 = require('./vector3D.js')
-const kEpsilon = 0.001;
+const kEpsilon = 0.000001;
 
 function create2DArray(options) {
   const arr = [];
