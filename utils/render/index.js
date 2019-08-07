@@ -9,14 +9,15 @@ const ligts = {
 }
 const options = {
   camera_pos: new vec3(0, -2, 0),
-  width: 100,
-  height: 100,
+  width: 300,
+  height: 300,
   fov: 150,
   backgroundColor: new vec3(0.3, 0, 0.3),
   bias: 0.75,
   maxDepth: 5,
 }
-const data = render(readOBJ('2.obj'), ligts, options);
+const read = readOBJ('2.obj');
+const data = render(read, ligts, options);
 const writer = new saver(data, options);
 const buffer = writer.encode();
 fs.writeFile('result.bmp', buffer, () => {});

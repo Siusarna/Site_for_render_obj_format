@@ -8,7 +8,7 @@ function writeAsBMP(framebuffer, options) {
   if ((this.width * 3) % 4) {
     this.extraBytes = 4 - (this.width * 3) % 4;
   }
-  this.rgbSize = this.height * (3 * this.width + this.extraBytes);
+  this.rgbSize = (this.height * 3 * this.width) + (this.width * this.extraBytes);
   this.headerInfoSize = 40;
   this.data = [];
 
