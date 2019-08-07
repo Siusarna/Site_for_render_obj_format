@@ -4,7 +4,10 @@ function writeAsBMP(framebuffer, options) {
   this.buffer = framebuffer;
   this.width = options.width;
   this.height = options.height;
-  this.extraBytes = this.width % 4;
+  this.extraBytes = 0;
+  if ((this.width * 3) % 4) {
+    this.extraBytes = 4 - (this.width * 3) % 4;
+  }
   this.rgbSize = this.height * (3 * this.width + this.extraBytes);
   this.headerInfoSize = 40;
   this.data = [];
@@ -62,13 +65,13 @@ writeAsBMP.prototype.encode = function() {
   for (let y = 0; y < this.height; y++) {
     for (let x = 0; x < this.width; x++) {
       let p = this.pos + y * rowBytes + x * 3;
-      tempBuffer[p] = this.buffer[y][x].z; //b
-      tempBuffer[p + 1] = this.buffer[y][x].y; //g
-      tempBuffer[p + 2] = this.buffer[y][x].x; //r
+      tempBuffer[p] = 255 * Math.max(0, Math.min(1, this.buffer[y][x].x)); //b
+      tempBuffer[p + 1] = 255 * Math.max(0, Math.min(1, this.buffer[y][x].y)); //g
+      tempBuffer[p + 2] = 255 * Math.max(0, Math.min(1, this.buffer[y][x].z)); //r
     }
     if (this.extraBytes > 0) {
       let fillOffset = this.pos + y * rowBytes + this.width * 3;
-      tempBuffer.fill(0, fillOffset, fillOffset + thos.extraBytes);
+      tempBuffer.fill(0, fillOffset, fillOffset + this.extraBytes);
     }
   }
   return tempBuffer;

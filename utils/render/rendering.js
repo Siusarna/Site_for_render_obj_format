@@ -35,6 +35,7 @@ function rayTriangleIntersect(orig, dir, triangle, t, u, v) {
     return [false, t, u, v];
   }
   t = v0v2.dot(qvec) * invDet;
+
   return [true, t, u, v];
 }
 
@@ -71,6 +72,7 @@ function castRay(orig, dir, triangle, lights, options) {
     light_dir.y /= distance;
     light_dir.z /= distance;
     let t, u, v;
+
     shad = !rayTriangleIntersect(point + n * options.bias, -light_dir, triangle, t, u, v);
     diffuse_light_intensity += shad * lights[i].intensity * Math.max(0, n.dot(light_dir));
   }
@@ -82,11 +84,17 @@ function render(triangles, lights, options) {
   for (let i = 0; i < triangles.length; i++) {
     for (let j = 0; j < options.height; j++) {
       for (let k = 0; k < options.width; k++) {
-        const x = (2 * (i + 0.5) / options.width - 1) * Math.tan(options.fov / 2) * options.width / options.height;
+        const x = (2 * (k + 0.5) / options.width - 1) * Math.tan(options.fov / 2) * options.width / options.height;
         const z = -(2 * (j + 0.5) / options.height - 1) * Math.tan(options.fov / 2);
         const dir = new vec3(x, -1, z).normalize();
         if (framebuffer[j][k] === options.backgroundColor) {
-          framebuffer[j][k] = castRay(options.camera_pos, dir, triangles[i], lights, options);
+          let flag;
+          let t, u, v;
+          [flag, t, u, v] = rayTriangleIntersect(options.camera_pos, dir, triangles[i], t, u, v);
+          if (flag) {
+            framebuffer[j][k] = new vec3(0, 0.7, 0.7);
+          }
+          //framebuffer[j][k] = castRay(options.camera_pos, dir, triangles[i], lights, options);
         }
       }
     }

@@ -4,8 +4,8 @@ const triangle = require('./triangle.js');
 
 function readOBJ(name) {
   const str = fs.readFileSync('../../uploads/' + name, 'utf8');
-  const triangle = parceReadFile(str.split('\n'));
-  return triangle;
+  const triangles = parceReadFile(str.split('\n'));
+  return triangles;
 }
 
 function parceReadFile(arr) {
