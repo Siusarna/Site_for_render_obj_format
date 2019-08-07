@@ -60,18 +60,23 @@ writeAsBMP.prototype.encode = function() {
   tempBuffer.writeUInt32LE(this.importantColors, this.pos);
   this.pos += 4;
 
-  let rowBytes = 3 * this.width + this.extraBytes;
+  //let rowBytes = 3 * this.width + this.extraBytes;
 
   for (let y = 0; y < this.height; y++) {
     for (let x = 0; x < this.width; x++) {
-      let p = this.pos + y * rowBytes + x * 3;
-      tempBuffer[p] = 255 * Math.max(0, Math.min(1, this.buffer[y][x].x)); //b
-      tempBuffer[p + 1] = 255 * Math.max(0, Math.min(1, this.buffer[y][x].y)); //g
-      tempBuffer[p + 2] = 255 * Math.max(0, Math.min(1, this.buffer[y][x].z)); //r
+      //let p = this.pos + y * rowBytes + x * 3;
+      tempBuffer[this.pos++] = 255 * Math.max(0, Math.min(1, this.buffer[y][x].x)); //b
+      tempBuffer[this.pos++] = 255 * Math.max(0, Math.min(1, this.buffer[y][x].y)); //g
+      tempBuffer[this.pos++] = 255 * Math.max(0, Math.min(1, this.buffer[y][x].z)); //r
     }
     if (this.extraBytes > 0) {
-      let fillOffset = this.pos + y * rowBytes + this.width * 3;
-      tempBuffer.fill(0, fillOffset, fillOffset + this.extraBytes);
+      let count = 0;
+      while (count < this.extraBytes) {
+        tempBuffer[this.pos++] = 0;
+        count++;
+      }
+      //let fillOffset = this.pos + y * rowBytes + this.width * 3;
+      //tempBuffer.fill(0, fillOffset, fillOffset + this.extraBytes);
     }
   }
   return tempBuffer;
