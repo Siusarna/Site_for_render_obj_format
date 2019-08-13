@@ -33,6 +33,9 @@ Vec3.prototype = {
     const length = this.length();
     return new Vec3(this.x / length, this.y / length, this.z / length);
   },
+  acosV: function(second) {
+    return Math.acos(this.dot(second) / (this.length() * second.length()));
+  }
 }
 
 module.exports = Vec3;

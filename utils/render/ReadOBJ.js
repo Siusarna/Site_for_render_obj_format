@@ -29,10 +29,10 @@ function parceReadFile(arr) {
     } else if (first_literal === 'f') {
       const temp_arr = [];
       for (let j = 0; j < string.length; j++) {
-        const vertices = string[j].split('//');
+        const vertices = string[j].split('/');
         const obj = {
           v: vertices[0] - 1,
-          vn: vertices[1] - 1,
+          vn: vertices[2] - 1,
         }
         temp_arr.push(obj);
         delete obj
