@@ -1,9 +1,10 @@
 const fs = require('fs');
 const vec3 = require('./vector3D.js');
 const triangle = require('./triangle.js');
+const path = require('path')
 
 function readOBJ(name) {
-  const str = fs.readFileSync('../../uploads/' + name, 'utf8');
+  const str = fs.readFileSync("./uploads/" + name, 'utf8');
   const triangles = parceReadFile(str.split('\n'));
   return triangles;
 }

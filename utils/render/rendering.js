@@ -77,7 +77,6 @@ function scene_intersect(orig, dir, triangle, hit, normal) {
   return [temp, hit, normal];
 }
 
-
 function castRay(orig, dir, triangle, lights, options) {
   let hit = new vec3();
   let normal = new vec3();
@@ -93,7 +92,6 @@ function castRay(orig, dir, triangle, lights, options) {
   let diffuse_light_intensity2 = 0;
   if (dir.dot(normal) < 0) {
     normal = normal.multiply(-1);
-
   }
   for (let i = 0; i < lights.length; i++) {
     let shad = false;
@@ -109,23 +107,21 @@ function castRay(orig, dir, triangle, lights, options) {
     shad = !shad;
     diffuse_light_intensity += lights[i].intensity * Math.max(0, normal.dot(light_dir));
     diffuse_light_intensity2 += lights[i].intensity * Math.max(0, normal.dot(light_dir.multiply(-1)));
-    //console.log(`normal: ${JSON.stringify(normal)}, light_dir: ${JSON.stringify(light_dir)}, hit: ${JSON.stringify(hit)}`);
+    //console.log(`normal: ${JSON.stringify(normal)}, light_dir: ${JSON.stringify(light_dir)}, intensity: ${JSON.stringify(lights[i].intensity)}`);
   }
-  return new vec3(0.2, 0.5, 0.5).multiply(Math.max(diffuse_light_intensity, diffuse_light_intensity2));
+  return options.objectColor.multiply(Math.max(diffuse_light_intensity, diffuse_light_intensity2));
 
 }
 
 function render(triangles, lights, options) {
   framebuffer = create2DArray(options);
-  options.camera_dir = options.camera_pos.multiply(-1).normalize();
-  options.centerOfScreen = options.camera_pos.add(options.camera_dir);
-  options.fovInRad = fovToRad(options.fov);
-  for (let i = 0; i < triangles.length; i++) {
-    for (let j = 0; j < options.height; j++) {
-      for (let k = 0; k < options.width; k++) {
-        // const x = (2 * (k + 0.5) / options.width - 1) * Math.tan(options.fov / 2) * options.width / options.height;
-        // const z = -(2 * (j + 0.5) / options.height - 1) * Math.tan(options.fov / 2);
-        const dir = rayDirectionFinder(options, j, k)
+  for (let j = 0; j < options.height; j++) {
+    for (let k = 0; k < options.width; k++) {
+      const x = (2 * (k + 0.5) / options.width - 1) * Math.tan(options.fov / 2) * options.width / options.height;
+      const z = -(2 * (j + 0.5) / options.height - 1) * Math.tan(options.fov / 2);
+      const dir = new vec3(x, -1, z);
+      for (var i = 0; i < triangles.length; i++) {
+        //const dir = rayDirectionFinder(options, j, k)
         if (framebuffer[j][k] === options.backgroundColor) {
           framebuffer[j][k] = castRay(options.camera_pos, dir, triangles[i], lights, options);
         }
