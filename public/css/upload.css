@@ -1,0 +1,20 @@
+form{
+  width: 20vw;
+}
+input{
+  padding: 5px;
+  margin: 5px;
+  border-radius: 5px;
+}
+input[name = upload]{
+  width: 25vw;
+  background-color: RGB(50 120 50);
+  color: white;
+  height: 37px;
+  font-weight: bold;
+  font-size: 18px;
+}
+hr{
+  height: 2px;
+  background: black;
+}
