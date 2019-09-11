@@ -4,6 +4,9 @@ function Vec3(x, y, z) {
   this.z = z || 0;
 }
 Vec3.prototype = {
+  clone: function() {
+    return new Vec3(this.x, this.y, this.z);
+  },
   dot: function(vec3) {
     return this.x * vec3.x + this.y * vec3.y + this.z * vec3.z;
   },
@@ -18,7 +21,7 @@ Vec3.prototype = {
     return new Vec3(this.x + vec3.x, this.y + vec3.y, this.z + vec3.z);
   },
   minus: function(vec3) {
-    return new Vec3(this.x - vec3.x, this.y - vec3.y, this.z + vec3.z);
+    return new Vec3(this.x - vec3.x, this.y - vec3.y, this.z - vec3.z);
   },
   multiply: function(num) {
     return new Vec3(this.x * num, this.y * num, this.z * num);
@@ -30,6 +33,9 @@ Vec3.prototype = {
     const length = this.length();
     return new Vec3(this.x / length, this.y / length, this.z / length);
   },
+  acosV: function(second) {
+    return Math.acos(this.dot(second) / (this.length() * second.length()));
+  }
 }
 
 module.exports = Vec3;
