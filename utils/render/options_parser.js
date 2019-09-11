@@ -7,8 +7,6 @@ function option_parser(obj) {
   options.width = parseFloat(obj.width);
   options.height = parseFloat(obj.height);
   options.fov = parseFloat(obj.fov);
-  console.log(obj.objectColor);
-  console.log(obj.backgroundColor);
   const r_obj_color = parseInt(obj.objectColor[1] + obj.objectColor[2], 16);
   const g_obj_color = parseInt(obj.objectColor[3] + obj.objectColor[4], 16);
   const b_obj_color = parseInt(obj.objectColor[5] + obj.objectColor[6], 16);
