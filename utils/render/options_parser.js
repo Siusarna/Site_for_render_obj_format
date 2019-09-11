@@ -7,10 +7,16 @@ function option_parser(obj) {
   options.width = parseFloat(obj.width);
   options.height = parseFloat(obj.height);
   options.fov = parseFloat(obj.fov);
-  let rgb_color_of_objectColor = obj.objectColor.split(' ').map(el => Number(el / 255));
-  options.objectColor = new vec3(rgb_color_of_objectColor[0], rgb_color_of_objectColor[1], rgb_color_of_objectColor[2]);
-  const rgb_color_of_backgroundColor = obj.backgroundColor.split(' ').map(el => Number(el / 255));
-  options.backgroundColor = new vec3(rgb_color_of_backgroundColor[0], rgb_color_of_backgroundColor[1], rgb_color_of_backgroundColor[2]);
+  console.log(obj.objectColor);
+  console.log(obj.backgroundColor);
+  const r_obj_color = parseInt(obj.objectColor[1] + obj.objectColor[2], 16);
+  const g_obj_color = parseInt(obj.objectColor[3] + obj.objectColor[4], 16);
+  const b_obj_color = parseInt(obj.objectColor[5] + obj.objectColor[6], 16);
+  options.objectColor = new vec3(Number(r_obj_color), Number(g_obj_color), Number(b_obj_color));
+  const r_back_color = parseInt(obj.backgroundColor[1] + obj.backgroundColor[2], 16);
+  const g_back_color = parseInt(obj.backgroundColor[3] + obj.backgroundColor[4], 16);
+  const b_back_color = parseInt(obj.backgroundColor[5] + obj.backgroundColor[6], 16);
+  options.backgroundColor = new vec3(Number(r_back_color), Number(g_back_color), Number(b_back_color));
   options.bias = 0.2;
   return options;
 }

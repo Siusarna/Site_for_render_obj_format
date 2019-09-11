@@ -7,7 +7,6 @@ const vec3 = require('./vector3D.js');
 const fs = require('fs');
 
 function startRender(file, options, lights) {
-  console.log(options);
   const read = readOBJ(file);
   const data = render(read, lights, options);
   const writer = new saver(data, options);

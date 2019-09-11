@@ -1,5 +1,5 @@
 form{
-  width: 20vw;
+  width: 15vw;
 }
 input{
   padding: 5px;
@@ -8,7 +8,7 @@ input{
 }
 input[name = upload]{
   width: 25vw;
-  background-color: RGB(50 120 50);
+  background-color: RGB(255 0 0);
   color: white;
   height: 37px;
   font-weight: bold;
@@ -17,4 +17,7 @@ input[name = upload]{
 hr{
   height: 2px;
   background: black;
+}
+label{
+  margin-left: 5px;
 }

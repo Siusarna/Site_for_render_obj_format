@@ -46,12 +46,17 @@ body{
 }
 .logo_nav{
   height: 35%;
-  width: 16%;
+  width: 18vw;
   background-color: Transparent;
+  text-decoration: none;
   border: 2px  solid;
   color: #F3F3F3;
   font-size: 130%;
   border-color:#FFFFFF;
+  text-align: center;
+}
+.logo_nav_text{
+      vertical-align: -webkit-baseline-middle;
 }
 header nav {
   grid-area: nav;

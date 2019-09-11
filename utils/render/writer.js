@@ -65,9 +65,9 @@ writeAsBMP.prototype.encode = function() {
   for (let y = 0; y < this.height; y++) {
     for (let x = 0; x < this.width; x++) {
       //let p = this.pos + y * rowBytes + x * 3;
-      tempBuffer[this.pos++] = 255 * Math.max(0, Math.min(1, this.buffer[y][x].x)); //b
-      tempBuffer[this.pos++] = 255 * Math.max(0, Math.min(1, this.buffer[y][x].y)); //g
-      tempBuffer[this.pos++] = 255 * Math.max(0, Math.min(1, this.buffer[y][x].z)); //r
+      tempBuffer[this.pos++] = Math.max(0, Math.min(255, this.buffer[y][x].z)); //b
+      tempBuffer[this.pos++] = Math.max(0, Math.min(255, this.buffer[y][x].y)); //g
+      tempBuffer[this.pos++] = Math.max(0, Math.min(255, this.buffer[y][x].x)); //r
     }
     if (this.extraBytes > 0) {
       let count = 0;
