@@ -11,7 +11,7 @@ function startRender(file, options, lights) {
   const data = render(read, lights, options);
   const writer = new saver(data, options);
   const buffer = writer.encode();
-  fs.writeFile(`public/img/download/result.bmp`, buffer, () => {});
+  return buffer;
 }
 
 module.exports = {
