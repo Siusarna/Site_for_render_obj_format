@@ -24,7 +24,6 @@ router.get('/result', (req, res) => {
   res.sendFile(path.resolve('public', 'html', 'result.html'));
 })
 router.post('/', upload.single("file-to-upload"), (req, res) => {
-  console.log(req);
   const fileName = req.file.originalname;
   const options = render.option_parser(req.body);
   const light = render.light_parser(req.body);
