@@ -1,7 +1,10 @@
 const first_input = document.getElementsByName("file-to-upload")[0];
 const upload = document.getElementsByName("upload")[0];
-
 const socket = io();
+
+socket.on("timer", (data)=>{
+  console.log(data);
+})
 
 function OBJfilter(str) {
   return str.includes(".obj");
