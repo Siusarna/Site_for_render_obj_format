@@ -4,12 +4,13 @@
     <title>Simple Multer Upload Example</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="css/upload.css">
+    <link rel="stylesheet" type="text/css" href="../css/upload.css">
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
   </head>
   <body>
     <hr>
     <form action="/upload" enctype="multipart/form-data" method="post" name="options" >
-      <input type="file"  name="file-to-upload">
+      <input type="file" name="file-to-upload">
       <input type="text" required name="camera_pos" placeholder="camera_pos: x y z" value="0 -2 0" />
       <input type="text" required name="width" placeholder="width"  value="50" />
       <input type="text" required name="height" placeholder="height" value="50" />
@@ -24,6 +25,6 @@
     <button type="submit" name="upload" disabled = true >Upload</button>
     <hr>
     <a href="/">Home</a>
-    <script src="js/take_file.js"></script>
+    <script src="../js/take_file.js"></script>
   </body>
 </html>
