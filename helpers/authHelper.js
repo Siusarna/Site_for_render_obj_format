@@ -1,7 +1,7 @@
 const uuid = require("uuid/v4");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
-const { secret, tokens } = require("../config.js").jwt;
+const { secret, tokens } = require("../config/config.js").jwt;
 
 const Token = mongoose.model("Token");
 

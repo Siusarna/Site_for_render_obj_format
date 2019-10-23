@@ -8,7 +8,8 @@ const io = require("socket.io")(server);
 const mongoose = require("mongoose");
 require("./models/user.js");
 
-require("config/app.js")(app);
+require("./config/app.js")(app);
+const config = require("./config/config.js");
 
 const upload = require("./route/upload.js")(app, io);
 const login = require("./route/auth.js")(app);
