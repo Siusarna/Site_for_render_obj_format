@@ -18,4 +18,5 @@ module.exports = {
   startRender,
   option_parser,
   light_parser,
+  readOBJ,
 };
