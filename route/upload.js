@@ -29,7 +29,7 @@ module.exports = function(app, io) {
     const observationalError = time * 0.061;
     io.sockets.emit("timer", {
       calculatedTime: time,
-      observationalError: observationalError
+      observationalError: observationalError.toFixed(1)
     });
     const light = render.light_parser(req.body);
     const image_data = render.startRender(fileName, options, light);
@@ -38,7 +38,5 @@ module.exports = function(app, io) {
     };
     res.send(data_to_send);
   });
-  io.on("connection", function(socket) {
-    console.log("new users");
-  });
+  io.on("connection", function(socket) {});
 };

@@ -6,7 +6,7 @@ input{
   margin: 5px;
   border-radius: 5px;
 }
-input[name = upload]{
+button[name = upload]{
   width: 25vw;
   background-color: RGB(255 0 0);
   color: white;

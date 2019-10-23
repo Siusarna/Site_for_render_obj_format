@@ -2,7 +2,28 @@ const first_input = document.getElementsByName("file-to-upload")[0];
 const upload = document.getElementsByName("upload")[0];
 const socket = io();
 
+function startTimer(data, display) {
+    var timer = data.calculatedTime, minutes, seconds;
+    document.querySelector('#observationalError').textContent = data.observationalError;
+    const interval = setInterval(function () {
+        minutes = parseInt(timer / 60, 10)
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes + ":" + seconds;
+
+        if (--timer <= 0) {
+            clearInterval(interval);
+            document.querySelector('#observationalError').textContent = "00:00";
+        }
+    }, 1000);
+}
+
 socket.on("timer", (data)=>{
+  display = document.querySelector('#time');
+  startTimer(data, display);
   console.log(data);
 })
 
