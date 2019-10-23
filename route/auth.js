@@ -4,5 +4,5 @@ const auth = require("../controllers/auth.js");
 
 module.exports = app => {
   app.get("/login/", auth.getPage);
-  app.post("/login/", auth.signIn);
+  app.post("/login/", auth.signUp);
 };
