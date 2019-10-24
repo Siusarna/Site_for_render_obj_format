@@ -58,6 +58,11 @@ body{
 .logo_nav_text{
       vertical-align: -webkit-baseline-middle;
 }
+.Login{
+  text-decoration: none;
+  color: white;
+  margin-top: 63px;
+}
 header nav {
   grid-area: nav;
   display: flex;

@@ -38,11 +38,11 @@ const signIn = (req, res) => {
 };
 
 const getLoginPage = (req, res) => {
-  res.sendFile(path.resolve("public", "html", "take_file.html"));
+  res.status(200).sendFile(path.resolve("public", "html", "login.html"));
 };
 
 const getSignUpPage = (req, res) => {
-  res.status(200).sendFile(path.resolve("public", "html", "take_file.html"));
+  res.status(200).sendFile(path.resolve("public", "html", "signUp.html"));
 };
 
 const signUp = (req, res) => {
