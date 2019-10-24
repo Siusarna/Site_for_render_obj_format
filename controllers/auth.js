@@ -27,7 +27,7 @@ const signIn = (req, res) => {
       if (!user) {
         res.status(401).json({ message: "User does not exist!" });
       }
-      const isValid = bCrypt.compareSync(password, user.password);
+      const isValid = password === user.password;
       if (isValid) {
         updateTokens(user._id).then(tokens => res.json(tokens));
       } else {
@@ -53,7 +53,6 @@ const signUp = (req, res) => {
   });
   try {
     const savedUser = user.save();
-    console.log(savedUser);
     res.send(savedUser);
   } catch (e) {
     res.status(400).send(err);

@@ -19,6 +19,9 @@ app.get("/", (req, res) => {
 });
 
 mongoose
-  .connect(config.mongoUri)
+  .connect(config.mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
   .then(() => server.listen(config.appPort, () => console.log("ready")))
   .catch(() => console.log("Error"));

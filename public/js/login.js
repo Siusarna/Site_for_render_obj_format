@@ -1,6 +1,6 @@
 document.getElementById('login').addEventListener("click", () => {
-  const formData = new FormData(document.forms.signUp);
-  const url = "/signUp/";
+  const formData = new FormData(document.forms.login);
+  const url = "/login/";
   const data = {};
 
   for(let pair of formData.entries()){
@@ -14,7 +14,7 @@ document.getElementById('login').addEventListener("click", () => {
     },
     body: JSON.stringify(data),
   };
-  
+
   fetch(url, options)
     .then(response => response.json())
     .then(result => {

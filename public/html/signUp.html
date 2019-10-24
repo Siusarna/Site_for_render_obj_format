@@ -7,18 +7,15 @@
     <link rel="stylesheet" type="text/css" href="../css/login.css">
   </head>
   <body>
-    <form action="/signUp" enctype="multipart/form-data" method="post" name="options">
-      <div class="container">
-        <label for="uname"><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" name="uname" required>
+    <form action="/signUp" enctype="multipart/form-data" method="post" name="signUp">
+        <label for="name"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="name" required>
 
-        <label for="uname"><b>Email</b></label>
+        <label for="email"><b>Email</b></label>
         <input type="text" placeholder="Enter Email" name="email" required>
 
-        <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="psw" required>
-
-      </div>
+        <label for="password"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="password" required>
     </form>
     <div class="container" style="background-color:#f1f1f1">
       <button type="submit" id="login">Login</button>
