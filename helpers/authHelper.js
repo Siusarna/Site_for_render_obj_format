@@ -1,11 +1,11 @@
-const uuid = require("uuid/v4");
-const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose");
-const { secret, tokens } = require("../config/config.js").jwt;
+const uuid = require('uuid/v4');
+const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
+const { secret, tokens } = require('../config/config.js').jwt;
 
-const Token = mongoose.model("Token");
+const Token = mongoose.model('Token');
 
-const generateAccessToken = userId => {
+const generateAccessToken = (userId) => {
   const payload = {
     userId,
     type: tokens.access.type

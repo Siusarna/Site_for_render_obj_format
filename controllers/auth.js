@@ -1,15 +1,15 @@
-const mongoose = require("mongoose");
-require("../models/index.js");
-const bCrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const { secret } = require("../config/config.js").jwt;
-const authHelper = require("../helpers/authHelper.js");
-const path = require("path");
+const mongoose = require('mongoose');
+require('../models/index.js');
+// const bCrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { secret } = require('../config/config.js').jwt;
+const authHelper = require('../helpers/authHelper.js');
+const path = require('path');
 
-const User = mongoose.model("User");
-const Token = mongoose.model("Token");
+const User = mongoose.model('User');
+const Token = mongoose.model('Token');
 
-const updateTokens = userId => {
+const updateTokens = (userId) => {
   const accessToken = authHelper.generateAccessToken(userId);
   const refreshToken = authHelper.generateRefreshToken();
 
@@ -23,26 +23,26 @@ const signIn = (req, res) => {
   const { email, password } = req.body;
   User.findOne({ email })
     .exec()
-    .then(user => {
+    .then((user) => {
       if (!user) {
-        res.status(401).json({ message: "User does not exist!" });
+        res.status(401).json({ message: 'User does not exist!' });
       }
       const isValid = password === user.password;
       if (isValid) {
-        updateTokens(user._id).then(tokens => res.json(tokens));
+        updateTokens(user._id).then((tokens) => res.json(tokens));
       } else {
-        res.status(401).json({ message: "Invalid credentials!" });
+        res.status(401).json({ message: 'Invalid credentials!' });
       }
     })
-    .catch(err => res.status(500).json({ message: err.message }));
+    .catch((err) => res.status(500).json({ message: err.message }));
 };
 
 const getLoginPage = (req, res) => {
-  res.status(200).sendFile(path.resolve("public", "html", "login.html"));
+  res.status(200).sendFile(path.resolve('public', 'html', 'login.html'));
 };
 
 const getSignUpPage = (req, res) => {
-  res.status(200).sendFile(path.resolve("public", "html", "signUp.html"));
+  res.status(200).sendFile(path.resolve('public', 'html', 'signUp.html'));
 };
 
 const signUp = (req, res) => {
@@ -55,7 +55,7 @@ const signUp = (req, res) => {
     const savedUser = user.save();
     res.send(savedUser);
   } catch (e) {
-    res.status(400).send(err);
+    res.status(400).send(e);
   }
 };
 
@@ -64,29 +64,29 @@ const refreshToken = (req, res) => {
   let payload;
   try {
     payload = jwt.verify(refreshToken, secret);
-    if (payload.type !== "refresh") {
-      res.status(400).json({ message: "Invalid token" });
+    if (payload.type !== 'refresh') {
+      res.status(400).json({ message: 'Invalid token' });
       return;
     }
   } catch (e) {
     if (e instanceof jwt.TokenExpiredError) {
-      res.status(400).json({ message: "Token expired" });
+      res.status(400).json({ message: 'Token expired' });
       return;
     } else if (e instanceof jwt.JsonWebTokenError) {
-      res.status(400).json({ message: "Invalid token" });
+      res.status(400).json({ message: 'Invalid token' });
       return;
     }
   }
   Token.findOne({ tokenId: payload.id })
     .exec()
-    .then(token => {
+    .then((token) => {
       if (token === null) {
-        throw new Error("Invalid token");
+        throw new Error('Invalid token');
       }
       return updateTokens(token.userId);
     })
-    .then(tokens => res.json(tokens))
-    .catch(err => res.status(400).json({ message: err.message }));
+    .then((tokens) => res.json(tokens))
+    .catch((err) => res.status(400).json({ message: err.message }));
 };
 
 module.exports = {
