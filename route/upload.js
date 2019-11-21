@@ -1,17 +1,21 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const render = require('../utils/render/index.js');
+const uploader = require('../controllers/upload.js');
 
-module.exports = function (app, io) {
-  const storage = multer.diskStorage({
+const makeConfigForMulter = () => {
+  return {
     filename: function (req, file, cb) {
       cb(null, file.originalname);
     },
     destination: function (req, file, cb) {
       cb(null, 'uploads');
     }
-  });
+  };
+};
+
+module.exports = function (app, io) {
+  const storage = multer.diskStorage(makeConfigForMulter());
   const upload = multer({
     storage
   });
@@ -22,20 +26,9 @@ module.exports = function (app, io) {
   });
   app.post('/upload/', upload.single('file-to-upload'), (req, res) => {
     const fileName = req.file.originalname;
-    const options = render.optionParser(req.body);
-    const countTriangle = render.readOBJ(fileName).length;
-    const sizeOfDate = countTriangle * options.width * options.height;
-    const time = (0.0001 * sizeOfDate ** 1.0175) / 1000 / 2;
-    const observationalError = time * 0.061;
-    io.sockets.emit('timer', {
-      calculatedTime: time,
-      observationalError: observationalError.toFixed(1)
-    });
-    const light = render.lightParser(req.body);
-    const imageData = render.startRender(fileName, options, light);
-    const dataForSend = {
-      data: Buffer.from(imageData).toString('base64')
-    };
+    const [processingTime, options] = uploader.getTimeAndParseOption(fileName, req.body);
+    io.sockets.emit('timer', processingTime);
+    const dataForSend = uploader.createImage(fileName, options, req.body);
     res.send(dataForSend);
   });
   io.on('connection', function (socket) {});
