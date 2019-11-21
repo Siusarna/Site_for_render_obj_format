@@ -22,7 +22,7 @@ module.exports = function (app, io) {
   });
   app.post('/upload/', upload.single('file-to-upload'), (req, res) => {
     const fileName = req.file.originalname;
-    const options = render.option_parser(req.body);
+    const options = render.optionParser(req.body);
     const countTriangle = render.readOBJ(fileName).length;
     const sizeOfDate = countTriangle * options.width * options.height;
     const time = (0.0001 * sizeOfDate ** 1.0175) / 1000 / 2;
@@ -31,7 +31,7 @@ module.exports = function (app, io) {
       calculatedTime: time,
       observationalError: observationalError.toFixed(1)
     });
-    const light = render.light_parser(req.body);
+    const light = render.lightParser(req.body);
     const imageData = render.startRender(fileName, options, light);
     const dataForSend = {
       data: Buffer.from(imageData).toString('base64')

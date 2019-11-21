@@ -120,7 +120,7 @@ function render (triangles, lights, options) {
         // const dir = rayDirectionFinder(options, j, k)
         if (framebuffer[j][k] === options.backgroundColor) {
           framebuffer[j][k] = castRay(
-            options.camera_pos,
+            options.cameraPos,
             dir,
             triangles[i],
             lights,
