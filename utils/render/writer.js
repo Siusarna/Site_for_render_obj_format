@@ -1,6 +1,4 @@
-const fs = require('fs');
-
-function writeAsBMP(framebuffer, options) {
+function writeAsBMP (framebuffer, options) {
   this.buffer = framebuffer;
   this.width = options.width;
   this.height = options.height;
@@ -12,7 +10,7 @@ function writeAsBMP(framebuffer, options) {
   this.headerInfoSize = 40;
   this.data = [];
 
-  //*****************Header*********//
+  // *****************Header********* //
   this.flag = 'BM';
   this.reserved = 0;
   this.offset = 54;
@@ -26,7 +24,7 @@ function writeAsBMP(framebuffer, options) {
   this.importantColors = 0;
 }
 
-writeAsBMP.prototype.encode = function() {
+writeAsBMP.prototype.encode = function () {
   const tempBuffer = Buffer.alloc(this.offset + this.rgbSize);
   this.pos = 0;
   tempBuffer.write(this.flag, this.pos, 2);
@@ -60,14 +58,14 @@ writeAsBMP.prototype.encode = function() {
   tempBuffer.writeUInt32LE(this.importantColors, this.pos);
   this.pos += 4;
 
-  //let rowBytes = 3 * this.width + this.extraBytes;
+  // let rowBytes = 3 * this.width + this.extraBytes;
 
   for (let y = 0; y < this.height; y++) {
     for (let x = 0; x < this.width; x++) {
-      //let p = this.pos + y * rowBytes + x * 3;
-      tempBuffer[this.pos++] = Math.max(0, Math.min(255, this.buffer[y][x].z)); //b
-      tempBuffer[this.pos++] = Math.max(0, Math.min(255, this.buffer[y][x].y)); //g
-      tempBuffer[this.pos++] = Math.max(0, Math.min(255, this.buffer[y][x].x)); //r
+      // let p = this.pos + y * rowBytes + x * 3;
+      tempBuffer[this.pos++] = Math.max(0, Math.min(255, this.buffer[y][x].z)); // b
+      tempBuffer[this.pos++] = Math.max(0, Math.min(255, this.buffer[y][x].y)); // g
+      tempBuffer[this.pos++] = Math.max(0, Math.min(255, this.buffer[y][x].x)); // r
     }
     if (this.extraBytes > 0) {
       let count = 0;
@@ -75,11 +73,11 @@ writeAsBMP.prototype.encode = function() {
         tempBuffer[this.pos++] = 0;
         count++;
       }
-      //let fillOffset = this.pos + y * rowBytes + this.width * 3;
-      //tempBuffer.fill(0, fillOffset, fillOffset + this.extraBytes);
+      // let fillOffset = this.pos + y * rowBytes + this.width * 3;
+      // tempBuffer.fill(0, fillOffset, fillOffset + this.extraBytes);
     }
   }
   return tempBuffer;
-}
+};
 
 module.exports = writeAsBMP;
