@@ -1,41 +1,41 @@
-function Vec3(x, y, z) {
+function Vec3 (x, y, z) {
   this.x = x || 0;
   this.y = y || 0;
   this.z = z || 0;
 }
 Vec3.prototype = {
-  clone: function() {
+  clone: function () {
     return new Vec3(this.x, this.y, this.z);
   },
-  dot: function(vec3) {
+  dot: function (vec3) {
     return this.x * vec3.x + this.y * vec3.y + this.z * vec3.z;
   },
-  cross: function(vec3) {
+  cross: function (vec3) {
     return new Vec3(
       this.y * vec3.z - this.z * vec3.y,
       this.z * vec3.x - this.x * vec3.z,
       this.x * vec3.y - this.y * vec3.x
     );
   },
-  add: function(vec3) {
+  add: function (vec3) {
     return new Vec3(this.x + vec3.x, this.y + vec3.y, this.z + vec3.z);
   },
-  minus: function(vec3) {
+  minus: function (vec3) {
     return new Vec3(this.x - vec3.x, this.y - vec3.y, this.z - vec3.z);
   },
-  multiply: function(num) {
+  multiply: function (num) {
     return new Vec3(this.x * num, this.y * num, this.z * num);
   },
-  length: function() {
+  length: function () {
     return Math.sqrt(this.x ** 2 + this.y ** 2 + this.z ** 2);
   },
-  normalize: function() {
+  normalize: function () {
     const length = this.length();
     return new Vec3(this.x / length, this.y / length, this.z / length);
   },
-  acosV: function(second) {
+  acosV: function (second) {
     return Math.acos(this.dot(second) / (this.length() * second.length()));
   }
-}
+};
 
 module.exports = Vec3;

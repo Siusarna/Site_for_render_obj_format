@@ -1,4 +1,4 @@
-function Triangle(v0, v1, v2, n0, n1, n2) {
+function Triangle (v0, v1, v2, n0, n1, n2) {
   this.v0 = v0;
   this.v1 = v1;
   this.v2 = v2;

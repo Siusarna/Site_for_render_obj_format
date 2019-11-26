@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Simple Multer Upload Example</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../css/login.css">
+  </head>
+  <body>
+    <form action="/login" enctype="multipart/form-data" method="post" name="login">
+      <div class="container">
+        <label for="email"><b>Email</b></label>
+        <input type="text" placeholder="Enter Username" name="email" required>
+
+        <label for="password"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="password" required>
+      </div>
+    </form>
+    <p id="error"></p>
+    <div class="container" style="background-color:#f1f1f1">
+      <button type="submit" id="login">Login</button>
+      <button type="button" id="cancel">Cancel</button>
+      <span class="psw">Forgot <a href="#">password?</a></span>
+    </div>
+    <script src="../js/login.js"></script>
+  </body>
+</html>
