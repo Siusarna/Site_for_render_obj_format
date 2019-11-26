@@ -4,8 +4,10 @@ document.getElementById('login').addEventListener('click', () => {
   const url = '/signUp/';
   const data = {};
 
+  const keyIndex = 0;
+  const dataIndex = 1;
   for (const pair of formData.entries()) {
-    data[pair[0]] = pair[1];
+    data[pair[keyIndex]] = pair[dataIndex];
   }
 
   const options = {
@@ -17,8 +19,9 @@ document.getElementById('login').addEventListener('click', () => {
   };
 
   fetch(url, options)
-    .then((response) => response.json())
-    .then((result) => {
-      console.log(result);
+    .then((response) => {
+      window.location.href = '../login';
+    }).catch(e => {
+      console.log(e);
     });
 });

@@ -1,9 +1,10 @@
-const multer = require("multer");
-const bodyParser = require("body-parser");
-const express = require("express");
-
-module.exports = app => {
-  app.use(express.static("public"));
+const bodyParser = require('body-parser');
+const express = require('express');
+const cookieParser = require('cookie-parser');
+module.exports = (app) => {
+  app.use(express.static('public'));
+  app.use(cookieParser());
+  app.set('view engine', 'ejs');
   app.use(
     bodyParser.urlencoded({
       extended: true

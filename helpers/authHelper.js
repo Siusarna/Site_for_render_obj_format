@@ -31,8 +31,18 @@ const replaceDbRefreshToken = (tokenId, userId) =>
     .exec()
     .then(() => Token.create({ tokenId, userId }));
 
+const updateTokens = (userId) => {
+  const accessToken = generateAccessToken(userId);
+  const refreshToken = generateRefreshToken();
+  return replaceDbRefreshToken(refreshToken.id, userId).then(() => ({
+    accessToken,
+    refreshToken: refreshToken.token
+  }));
+};
+
 module.exports = {
   generateAccessToken,
   generateRefreshToken,
-  replaceDbRefreshToken
+  replaceDbRefreshToken,
+  updateTokens
 };
