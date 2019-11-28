@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 require('../models/index.js');
 const jwtConfig = require('../config/config.js').jwt;
 const { secret } = jwtConfig;
-const configTokens = jwtConfig.tokens;
 const mongoose = require('mongoose');
 const authHelper = require('../helpers/authHelper.js');
 
@@ -18,44 +17,6 @@ const getInfoFromDbAndRenderPage = (res, payload) => {
     });
 };
 
-const parseConfig = (token) => {
-  const time = configTokens[token].expiresIn;
-  if (time.includes('m')) {
-    return time.slice(0, time.length - 1) * 60 * 1000; // minute convert to milisecond
-  } else if (time.includes('s')) {
-    return time.slice(0, time.length - 1) * 1000; // second convert to milisecond
-  }
-};
-
-const processingError = async (req, res, status, message) => {
-  if (message === 'Token expired!') {
-    authHelper
-      .refreshToken(req.cookies.refreshToken)
-      .then((tokens) => {
-        const timeForAccessToken = parseConfig('access');
-        const timeForRefreshToken = parseConfig('refresh');
-        res
-          .status(200)
-          .cookie('accessToken', tokens.accessToken, {
-            path: '/',
-            expires: new Date(Date.now() + timeForAccessToken)
-          })
-          .cookie('refreshToken', tokens.refreshToken, {
-            path: '/',
-            expires: new Date(Date.now() + timeForRefreshToken)
-          })
-          .redirect('/user');
-      })
-      .catch((e) => {
-        console.log(e);
-        res.status(e.status).redirect('/login');
-      });
-  } else {
-    console.log(message);
-    res.status(status).redirect('/login');
-  }
-};
-
 const loadPage = (req, res) => {
   const userToken = req.cookies.accessToken;
   try {
@@ -63,7 +24,7 @@ const loadPage = (req, res) => {
     getInfoFromDbAndRenderPage(res, payload);
   } catch (err) {
     const { status, message } = err;
-    processingError(req, res, status, message);
+    authHelper.processingError(req, res, status, message);
   }
 };
 
