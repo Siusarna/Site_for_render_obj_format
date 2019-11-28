@@ -4,61 +4,10 @@ const jwtConfig = require('../config/config.js').jwt;
 const { secret } = jwtConfig;
 const configTokens = jwtConfig.tokens;
 const mongoose = require('mongoose');
-const HttpError = require('../helpers/HttpError.js');
 const authHelper = require('../helpers/authHelper.js');
 
 const User = mongoose.model('User');
 const Token = mongoose.model('Token');
-
-const checkToken = (accessToken) => {
-  if (!accessToken) {
-    throw new HttpError(401, 'Token expired!');
-  }
-  let payload;
-  try {
-    payload = jwt.verify(accessToken, secret);
-  } catch (e) {
-    throw new HttpError(400, 'Token expired!');
-  }
-  if (payload.type !== 'access') {
-    throw new HttpError(400, 'Invalid token!');
-  }
-  return payload;
-};
-
-const updateTokensInDB = async (payload) => {
-  return new Promise((resolve, reject) => {
-    Token.findOne({ tokenId: payload.id })
-      .exec()
-      .then(async (token) => {
-        if (token === null) {
-          throw new Error('Invalid token');
-        }
-        resolve(authHelper.updateTokens(token.userId));
-      })
-      .catch((err) => {
-        throw new HttpError(400, err.message);
-      });
-  });
-};
-
-const refreshToken = async (refreshToken) => {
-  let payload;
-  try {
-    payload = jwt.verify(refreshToken, secret);
-    if (payload.type !== 'refresh') {
-      throw new HttpError(400, 'Invalid token');
-    }
-  } catch (e) {
-    if (e instanceof jwt.TokenExpiredError) {
-      throw new HttpError(400, 'Token expired');
-    } else if (e instanceof jwt.JsonWebTokenError) {
-      throw new HttpError(400, 'Invalid token');
-    }
-  }
-  const tokens = await updateTokensInDB(payload);
-  return tokens;
-};
 
 const getInfoFromDbAndRenderPage = (res, payload) => {
   const { userId } = payload;
@@ -80,7 +29,8 @@ const parseConfig = (token) => {
 
 const processingError = async (req, res, status, message) => {
   if (message === 'Token expired!') {
-    refreshToken(req.cookies.refreshToken)
+    authHelper
+      .refreshToken(req.cookies.refreshToken)
       .then((tokens) => {
         const timeForAccessToken = parseConfig('access');
         const timeForRefreshToken = parseConfig('refresh');
@@ -109,7 +59,7 @@ const processingError = async (req, res, status, message) => {
 const loadPage = (req, res) => {
   const userToken = req.cookies.accessToken;
   try {
-    const payload = checkToken(userToken);
+    const payload = authHelper.checkToken(userToken);
     getInfoFromDbAndRenderPage(res, payload);
   } catch (err) {
     const { status, message } = err;
@@ -133,7 +83,6 @@ const logout = (req, res) => {
 };
 
 module.exports = {
-  checkToken,
   loadPage,
   logout
 };

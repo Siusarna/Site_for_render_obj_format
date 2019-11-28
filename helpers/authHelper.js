@@ -2,6 +2,7 @@ const uuid = require('uuid/v4');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const { secret, tokens } = require('../config/config.js').jwt;
+const HttpError = require('./httpError.js');
 
 const Token = mongoose.model('Token');
 
@@ -40,9 +41,58 @@ const updateTokens = (userId) => {
   }));
 };
 
+const checkToken = (accessToken) => {
+  if (!accessToken) {
+    throw new HttpError(401, 'Token expired!');
+  }
+  let payload;
+  try {
+    payload = jwt.verify(accessToken, secret);
+  } catch (e) {
+    throw new HttpError(400, 'Token expired!');
+  }
+  if (payload.type !== 'access') {
+    throw new HttpError(400, 'Invalid token!');
+  }
+  return payload;
+};
+
+const updateTokensInDB = async (payload) => {
+  return new Promise((resolve, reject) => {
+    Token.findOne({ tokenId: payload.id })
+      .exec()
+      .then(async (token) => {
+        if (token === null) {
+          throw new Error('Invalid token');
+        }
+        resolve(updateTokens(token.userId));
+      })
+      .catch((err) => {
+        throw new HttpError(400, err.message);
+      });
+  });
+};
+
+const refreshToken = async (refreshToken) => {
+  let payload;
+  try {
+    payload = jwt.verify(refreshToken, secret);
+    if (payload.type !== 'refresh') {
+      throw new HttpError(400, 'Invalid token');
+    }
+  } catch (e) {
+    if (e instanceof jwt.TokenExpiredError) {
+      throw new HttpError(400, 'Token expired');
+    } else if (e instanceof jwt.JsonWebTokenError) {
+      throw new HttpError(400, 'Invalid token');
+    }
+  }
+  const tokens = await updateTokensInDB(payload);
+  return tokens;
+};
+
 module.exports = {
-  generateAccessToken,
-  generateRefreshToken,
-  replaceDbRefreshToken,
-  updateTokens
+  updateTokens,
+  checkToken,
+  refreshToken
 };
