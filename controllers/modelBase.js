@@ -1,5 +1,7 @@
 const authHelper = require('../helpers/authHelper');
 
+const getInfoFromDbAndRenderPage = (res, payload) => {};
+
 const loadPage = (req, res) => {
   const userToken = req.cookies.accessToken;
   try {
@@ -7,6 +9,10 @@ const loadPage = (req, res) => {
     getInfoFromDbAndRenderPage(res, payload);
   } catch (err) {
     const { status, message } = err;
-    processingError(req, res, status, message);
+    authHelper.processingError(req, res, status, message);
   }
+};
+
+module.exports = {
+  loadPage
 };
