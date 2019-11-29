@@ -14,6 +14,7 @@ const config = require('./config/config.js');
 require('./route/upload.js')(app, io);
 require('./route/auth.js')(app);
 require('./route/user.js')(app);
+require('./route/user_models.js')(app);
 
 app.get('/', (req, res) => {
   res.sendFile(path.resolve('public/html/home.html'));
