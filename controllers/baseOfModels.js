@@ -29,27 +29,27 @@ const processingAccess = (req, res) => {
 
 const loadPage = (req, res) => {
   processingAccess(req, res).then((payload) => {
-    console.log(payload);
     getInfoFromDbAndRenderPage(res, payload);
   });
 };
 
 const addNewModelInDB = (req, res) => {
-  const payload = processingAccess(req, res);
-  const { userId } = payload;
-  const fileName = req.file.originalname;
-  const data = render.readOBJ(fileName);
-  const model = new Model({
-    userId: userId,
-    modelName: fileName,
-    data: data.toString()
+  processingAccess(req, res).then((payload) => {
+    const { userId } = payload;
+    const fileName = req.file.originalname;
+    const data = render.readOBJ(fileName);
+    const model = new Model({
+      userId: userId,
+      modelName: fileName,
+      data: data.toString()
+    });
+    try {
+      model.save();
+      res.status(200).json('Successfully added');
+    } catch (e) {
+      res.status(400).send(e);
+    }
   });
-  try {
-    model.save();
-    res.status(200).json('Successfully added');
-  } catch (e) {
-    res.status(400).send(e);
-  }
 };
 
 module.exports = {

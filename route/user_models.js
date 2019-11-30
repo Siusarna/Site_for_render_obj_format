@@ -20,7 +20,7 @@ const upload = multer({
 module.exports = (app) => {
   app.get('/model-base/', modelBase.loadPage);
   app.post(
-    '/upload/',
+    '/model-base/',
     upload.single('file-to-upload'),
     modelBase.addNewModelInDB
   );
