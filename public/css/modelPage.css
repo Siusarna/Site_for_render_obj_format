@@ -1,0 +1,45 @@
+.butSave {
+  margin: 20px;
+}
+
+.table {
+  font-family: 'Lucida Sans Unicode', 'Lucida Grande', Sans-Serif;
+  text-align: left;
+  border-collapse: separate;
+  border-spacing: 5px;
+  background: #ece9e0;
+  color: #656665;
+  border: 16px solid #ece9e0;
+  border-radius: 20px;
+  width: 50%;
+  margin: 20px auto;
+}
+
+.table tr {
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
+}
+
+.table td {
+  background: #f5d7bf;
+  padding: 10px;
+}
+
+.table tr:first-child td {
+  background: #ece9e0;
+}
+
+.col1 {
+  width: 10%;
+  text-align: right;
+}
+
+.col2 {
+  width: 15%;
+  text-align: right;
+}
+
+.col3 {
+  text-align: center;
+}

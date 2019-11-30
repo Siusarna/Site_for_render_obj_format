@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" />
-  <!-- <link rel="stylesheet" type="text/css" href="/css/home.css" /> -->
+  <link rel="stylesheet" type="text/css" href="/css/modelPage.css" />
   <title>Home</title>
 </head>
 
@@ -14,12 +14,20 @@
   <form enctype="multipart/form-data" name="addNewModel" >
     <input type="file" name="file-to-upload">
   </form>
-  <button type="submit" id="upload">Save</button>
-  <table>
+  <button class="butSave" type="submit" id="upload">Save</button>
+  <br>
+  <button class="butDelet" disabled='true' type="submit" id="delete">Delet model</button>
+  <table id="tableWithModels" class="table">
+    <tr>
+      <td class="col1">Status</td>
+      <td class="col2">Id</td>
+      <td class="col3">Model name</td>
+    </tr>
     <% for(var i=0; i < data.length; i++) { %>
        <tr>
-         <td><%= data[i].userId %></td>
-         <td><%= data[i].nameOfModel %></td>
+         <td class="col1"><input type="radio" name="select"></td>
+         <td class="col2"><%= i+1 %></td>
+         <td class="col3"><%= data[i].nameOfModel %></td>
        </tr>
     <% } %>
 </table>

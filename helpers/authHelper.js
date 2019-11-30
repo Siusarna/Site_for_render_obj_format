@@ -100,29 +100,44 @@ const parseConfig = (token) => {
   }
 };
 
+const redirectForSingIN = (req, res) => {
+  if (req.method === 'GET') {
+    res.redirect('/login');
+  } else {
+    const objWithRedirect = {
+      msg: 'redirect',
+      location: '/login'
+    };
+    res.json(objWithRedirect);
+  }
+};
+
+const setTokenInCookie = (newTokens, res) => {
+  const timeForAccessToken = parseConfig('access');
+  const timeForRefreshToken = parseConfig('refresh');
+  res
+    .status(200)
+    .cookie('accessToken', newTokens.accessToken, {
+      path: '/',
+      expires: new Date(Date.now() + timeForAccessToken)
+    })
+    .cookie('refreshToken', newTokens.refreshToken, {
+      path: '/',
+      expires: new Date(Date.now() + timeForRefreshToken)
+    });
+};
+
 const processingError = async (req, res, status, message) => {
   if (message !== 'Token expired!') {
     return res.redirect('/login');
   }
   refreshToken(req.cookies.refreshToken)
-    .then((tokens) => {
-      const timeForAccessToken = parseConfig('access');
-      const timeForRefreshToken = parseConfig('refresh');
-      res
-        .status(200)
-        .cookie('accessToken', tokens.accessToken, {
-          path: '/',
-          expires: new Date(Date.now() + timeForAccessToken)
-        })
-        .cookie('refreshToken', tokens.refreshToken, {
-          path: '/',
-          expires: new Date(Date.now() + timeForRefreshToken)
-        })
-        .redirect(req.path);
+    .then((newTokens) => {
+      setTokenInCookie(newTokens, res);
+      res.redirect(req.path);
     })
     .catch((e) => {
-      console.log('ERROR', e);
-      res.redirect('/login');
+      redirectForSingIN(req, res);
     });
 };
 

@@ -24,4 +24,5 @@ module.exports = (app) => {
     upload.single('file-to-upload'),
     modelBase.addNewModelInDB
   );
+  app.delete('/model-base/', modelBase.deletModelByName);
 };
