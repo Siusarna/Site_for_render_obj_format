@@ -57,18 +57,18 @@ const checkToken = (accessToken) => {
   return payload;
 };
 
-const updateTokensInDB = async (payload) => {
+const updateTokensInDB = (payload) => {
   return new Promise((resolve, reject) => {
     Token.findOne({ tokenId: payload.id })
       .exec()
-      .then(async (token) => {
+      .then((token) => {
         if (token === null) {
-          throw new Error('Invalid token');
+          reject(new Error('Invalid token'));
         }
         resolve(updateTokens(token.userId));
       })
       .catch((err) => {
-        throw new HttpError(400, err.message);
+        reject(new HttpError(400, err.message));
       });
   });
 };
@@ -100,32 +100,45 @@ const parseConfig = (token) => {
   }
 };
 
-const processingError = async (req, res, status, message) => {
-  if (message === 'Token expired!') {
-    refreshToken(req.cookies.refreshToken)
-      .then((tokens) => {
-        const timeForAccessToken = parseConfig('access');
-        const timeForRefreshToken = parseConfig('refresh');
-        res
-          .status(200)
-          .cookie('accessToken', tokens.accessToken, {
-            path: '/',
-            expires: new Date(Date.now() + timeForAccessToken)
-          })
-          .cookie('refreshToken', tokens.refreshToken, {
-            path: '/',
-            expires: new Date(Date.now() + timeForRefreshToken)
-          })
-          .redirect('/user');
-      })
-      .catch((e) => {
-        console.log(e);
-        res.status(e.status).redirect('/login');
-      });
+const redirectForSingIN = (req, res) => {
+  if (req.method === 'GET') {
+    res.redirect('/login');
   } else {
-    console.log(message);
-    res.status(status).redirect('/login');
+    const objWithRedirect = {
+      msg: 'redirect',
+      location: '/login'
+    };
+    res.json(objWithRedirect);
   }
+};
+
+const setTokenInCookie = (newTokens, res) => {
+  const timeForAccessToken = parseConfig('access');
+  const timeForRefreshToken = parseConfig('refresh');
+  res
+    .status(200)
+    .cookie('accessToken', newTokens.accessToken, {
+      path: '/',
+      expires: new Date(Date.now() + timeForAccessToken)
+    })
+    .cookie('refreshToken', newTokens.refreshToken, {
+      path: '/',
+      expires: new Date(Date.now() + timeForRefreshToken)
+    });
+};
+
+const processingError = async (req, res, status, message) => {
+  if (message !== 'Token expired!') {
+    return res.redirect('/login');
+  }
+  refreshToken(req.cookies.refreshToken)
+    .then((newTokens) => {
+      setTokenInCookie(newTokens, res);
+      res.redirect(req.path);
+    })
+    .catch((e) => {
+      redirectForSingIN(req, res);
+    });
 };
 
 module.exports = {

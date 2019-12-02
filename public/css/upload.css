@@ -1,12 +1,12 @@
-form{
+form {
   width: 15vw;
 }
-input{
+input {
   padding: 5px;
   margin: 5px;
   border-radius: 5px;
 }
-button[name = upload]{
+button {
   width: 25vw;
   background-color: RGB(255 0 0);
   color: white;
@@ -14,10 +14,13 @@ button[name = upload]{
   font-weight: bold;
   font-size: 18px;
 }
-hr{
+button[name='render'] {
+  background-color: RGB(0 255 0);
+}
+hr {
   height: 2px;
   background: black;
 }
-label{
+label {
   margin-left: 5px;
 }

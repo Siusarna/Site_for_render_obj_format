@@ -2,14 +2,18 @@ const render = require('../utils/render/index.js');
 
 const getTimeAndParseOption = (fileName, data) => {
   const options = render.optionParser(data);
-  const countTriangle = render.readOBJ(fileName).length;
-  const sizeOfDate = countTriangle * options.width * options.height;
+  const arrayOfTriangle = render.readOBJ(fileName);
+  const sizeOfDate = arrayOfTriangle.length * options.width * options.height;
   const time = (0.0001 * sizeOfDate ** 1.0175) / 1000 / 2; // this digit I get from formula
   const observationalError = time * 0.061;
-  return [{
-    calculatedTime: time,
-    observationalError: observationalError.toFixed(1)
-  }, options];
+  return [
+    {
+      calculatedTime: time,
+      observationalError: observationalError.toFixed(1)
+    },
+    options,
+    arrayOfTriangle
+  ];
 };
 
 const createImage = (fileName, options, data) => {

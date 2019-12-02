@@ -4,13 +4,12 @@ const Saver = require('./writer.js');
 const lightParser = require('./lightParser.js');
 const optionParser = require('./optionsParser.js');
 
-function startRender (file, options, lights) {
-  const read = readOBJ(file);
-  const data = render(read, lights, options);
+const startRender = (arrayOfTriangle, options, lights) => {
+  const data = render(arrayOfTriangle, lights, options);
   const writer = new Saver(data, options);
   const buffer = writer.encode();
   return buffer;
-}
+};
 
 module.exports = {
   startRender,
