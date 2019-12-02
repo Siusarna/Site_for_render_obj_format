@@ -28,12 +28,12 @@ module.exports = (app, io) => {
 
   app.post('/upload/', upload.single('file-to-upload'), (req, res) => {
     const fileName = req.file.originalname;
-    const [processingTime, options] = uploader.getTimeAndParseOption(
+    const [processingTime, options, model] = uploader.getTimeAndParseOption(
       fileName,
       req.body
     );
     io.sockets.emit('timer', processingTime);
-    const dataForSend = uploader.createImage(fileName, options, req.body);
+    const dataForSend = uploader.createImage(model, options, req.body);
     res.send(dataForSend);
   });
 

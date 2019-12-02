@@ -17,7 +17,9 @@ const upload = multer({
   storage
 });
 
-module.exports = (app) => {
+module.exports = (app, io) => {
+  io.on('connection', (socket) => {});
+
   app.get('/model-base/', modelBase.loadPage);
   app.post(
     '/model-base/',
@@ -25,4 +27,8 @@ module.exports = (app) => {
     modelBase.addNewModelInDB
   );
   app.delete('/model-base/', modelBase.deletModelByName);
+  app.get('/model-base/render', modelBase.pageForRender);
+  app.post('/model-base/render', (req, res) => {
+    modelBase.renderModel(req, res, io);
+  });
 };

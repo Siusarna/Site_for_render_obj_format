@@ -1,7 +1,9 @@
+/* eslint indent: 0 */
 const Vec3 = require('./vector3D.js');
+const operation = require('./operationWithVec3.js');
 const kEpsilon = 0.000001;
 
-function create2DArray (options) {
+const create2DArray = (options) => {
   const arr = [];
   for (let i = 0; i < options.height; i++) {
     arr[i] = [];
@@ -10,9 +12,9 @@ function create2DArray (options) {
     }
   }
   return arr;
-}
+};
 
-function rayTriangleIntersect (
+const rayTriangleIntersect = (
   orig,
   dir,
   triangle,
@@ -20,47 +22,46 @@ function rayTriangleIntersect (
   t = 0,
   u = 0,
   v = 0
-) {
-  const v0v1 = triangle.v1.minus(triangle.v0);
-  const v0v2 = triangle.v2.minus(triangle.v0);
-  const pvec = dir.cross(v0v2);
-  const det = v0v1.dot(pvec);
+) => {
+  const v0v1 = operation.minus(triangle.v1, triangle.v0);
+  const v0v2 = operation.minus(triangle.v2, triangle.v0);
+  const pvec = operation.cross(dir, v0v2);
+  const det = operation.dot(v0v1, pvec);
   if (det < kEpsilon && det > -kEpsilon) {
     return [false, t, u, v];
   }
   const invDet = 1 / det;
-  const tvec = orig.minus(triangle.v0);
-  u = tvec.dot(pvec) * invDet;
+  const tvec = operation.minus(orig, triangle.v0);
+  u = operation.dot(tvec, pvec) * invDet; // aaaa
   if (u < 0 || u > 1) {
     return [false, t, u, v];
   }
-  const qvec = tvec.cross(v0v1);
-  v = dir.dot(qvec) * invDet;
+  const qvec = operation.cross(tvec, v0v1);
+  v = operation.dot(dir, qvec) * invDet; // aaa
   if (v < 0 || u + v > 1) {
     return [false, t, u, v];
   }
-  t = v0v2.dot(qvec) * invDet;
+  t = operation.dot(v0v2, qvec) * invDet; // aaa
 
   return [true, t, u, v];
-}
+};
 
-function sceneIntersect (orig, dir, triangle, hit, normal) {
+const sceneIntersect = (orig, dir, triangle, hit, normal) => {
   let temp = false;
   let tnear, u, v;
   let flag = false;
   [flag, tnear, u, v] = rayTriangleIntersect(orig, dir, triangle);
   if (flag) {
-    hit = orig.add(dir.multiply(tnear));
-    normal = triangle.n0
-      .multiply(1 - u - v)
-      .add(triangle.n1.multiply(u))
-      .add(triangle.n2.multiply(v));
+    hit = operation.add(orig, operation.multiply(dir, tnear));
+    const temp1 = operation.multiply(triangle.n0, 1 - u - v); // aaaa
+    const temp2 = operation.add(temp1, operation.multiply(triangle.n1, u));
+    normal = operation.add(temp2, operation.multiply(triangle.n2, v));
     temp = true;
   }
   return [temp, hit, normal];
-}
+};
 
-function castRay (orig, dir, triangle, lights, options) {
+const castRay = (orig, dir, triangle, lights, options) => {
   let hit = new Vec3();
   let normal = new Vec3();
   let flag = true;
@@ -69,18 +70,24 @@ function castRay (orig, dir, triangle, lights, options) {
     return options.backgroundColor;
   }
   const shadowPointOrig =
-    dir.dot(normal) < 0
-      ? options.objectColor.add(normal.multiply(options.bias))
-      : options.objectColor.minus(normal.multiply(options.bias));
+    operation.dot(dir, normal) < 0
+      ? operation.add(
+          options.objectColor,
+          operation.multiply(normal, options.bias)
+        )
+      : operation.minus(
+          options.objectColor,
+          operation.multiply(normal, options.bias)
+        );
   let diffuseLightIntensity = 0;
   let diffuseLightIntensity2 = 0;
-  if (dir.dot(normal) < 0) {
-    normal = normal.multiply(-1);
+  if (operation.dot(dir, normal) < 0) {
+    normal = operation.multiply(normal, -1);
   }
   for (let i = 0; i < lights.length; i++) {
     let shad = false;
-    const lightDir = lights[i].position.minus(hit);
-    const r2 = lightDir.dot(lightDir);
+    const lightDir = operation.minus(lights[i].position, hit);
+    const r2 = operation.dot(lightDir, lightDir);
     // lightDir.normalize();
     const distance = Math.sqrt(r2);
     lightDir.x /= distance;
@@ -94,17 +101,19 @@ function castRay (orig, dir, triangle, lights, options) {
     );
     shad = !shad;
     diffuseLightIntensity +=
-      lights[i].intensity * Math.max(0, normal.dot(lightDir));
+      lights[i].intensity * Math.max(0, operation.dot(normal, lightDir));
     diffuseLightIntensity2 +=
-      lights[i].intensity * Math.max(0, normal.dot(lightDir.multiply(-1)));
+      lights[i].intensity *
+      Math.max(0, operation.dot(normal, operation.multiply(lightDir, -1)));
     // console.log(`normal: ${JSON.stringify(normal)}, lightDir: ${JSON.stringify(lightDir)}, intensity: ${JSON.stringify(lights[i].intensity)}`);
   }
-  return options.objectColor.multiply(
+  return operation.multiply(
+    options.objectColor,
     Math.max(diffuseLightIntensity, diffuseLightIntensity2)
   );
-}
+};
 
-function render (triangles, lights, options) {
+const render = (triangles, lights, options) => {
   const framebuffer = create2DArray(options);
   for (let j = 0; j < options.height; j++) {
     for (let k = 0; k < options.width; k++) {
@@ -131,6 +140,6 @@ function render (triangles, lights, options) {
     }
   }
   return framebuffer;
-}
+};
 
 module.exports = render;

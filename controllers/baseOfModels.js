@@ -3,6 +3,7 @@ require('../models/index.js');
 const mongoose = require('mongoose');
 const render = require('../utils/render/index.js');
 const fs = require('fs');
+const rayTracing = require('../utils/render/index.js');
 const Model = mongoose.model('ThreeDModel');
 
 const getInfoFromDbAndRenderPage = (res, payload = '0') => {
@@ -78,8 +79,69 @@ const deletModelByName = (req, res) => {
   });
 };
 
+const pageForRender = (req, res) => {
+  processingAccess(req, res).then((payload) => {
+    res.render('pageForRender/pageForRender');
+  });
+};
+
+const getModelFromDB = (nameOfModel, userId) => {
+  return new Promise((resolve, reject) => {
+    Model.findOne({ nameOfModel, userId })
+      .exec()
+      .then((result) => {
+        resolve(result);
+      });
+  });
+};
+
+const getTimeAndOption = (data, userId) => {
+  return new Promise((resolve, reject) => {
+    getModelFromDB(data.nameOfModel, userId).then((model) => {
+      const arrayOfTriangle = JSON.parse(model.data);
+      const options = rayTracing.optionParser(data);
+      const countTriangle = arrayOfTriangle.length;
+      const sizeOfDate = countTriangle * options.width * options.height;
+      const time = (0.0001 * sizeOfDate ** 1.0175) / 1000 / 2; // this digit I get from formula
+      const observationalError = time * 0.061;
+      resolve([
+        {
+          calculatedTime: time,
+          observationalError: observationalError.toFixed(1)
+        },
+        options,
+        arrayOfTriangle
+      ]);
+    });
+  });
+};
+
+const createImage = (threeDModel, options, data) => {
+  const light = render.lightParser(data);
+  const imageData = render.startRender(threeDModel, options, light);
+  const dataForSend = {
+    data: Buffer.from(imageData).toString('base64')
+  };
+  return dataForSend;
+};
+
+const renderModel = (req, res, io) => {
+  processingAccess(req, res)
+    .then((payload) => {
+      return getTimeAndOption(req.body, payload.userId);
+    })
+    .then((result) => {
+      const [processingTime, options, arrayOfTriangle] = result;
+      io.sockets.emit('timer', processingTime);
+      const dataForSend = createImage(arrayOfTriangle, options, req.body);
+      res.send(dataForSend);
+    });
+};
+
 module.exports = {
   loadPage,
   addNewModelInDB,
-  deletModelByName
+  deletModelByName,
+  pageForRender,
+  renderModel
 };

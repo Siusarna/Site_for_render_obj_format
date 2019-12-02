@@ -2,6 +2,7 @@
 const divForMessage = document.getElementById('status');
 const radios = document.getElementsByName('select');
 const btnDelet = document.getElementById('delete');
+const btnRender = document.getElementById('render');
 
 document.getElementById('upload').addEventListener('click', () => {
   const formData = new FormData(document.forms.addNewModel);
@@ -23,7 +24,7 @@ document.getElementById('upload').addEventListener('click', () => {
   });
 });
 
-const getNameForDeletModel = () => {
+const getNameForWorkingModel = () => {
   let row;
   for (const radio of radios) {
     if (radio.checked) {
@@ -35,7 +36,7 @@ const getNameForDeletModel = () => {
 };
 
 btnDelet.addEventListener('click', () => {
-  const name = getNameForDeletModel();
+  const name = getNameForWorkingModel();
   const search = `?nameOfModel=${name}`;
   const url = `/model-base/${search}`;
   const options = {
@@ -58,8 +59,16 @@ const addOnClickForRadio = () => {
   for (let i = 0; i < radios.length; i++) {
     radios[i].onchange = () => {
       btnDelet.disabled = false;
+      btnRender.disabled = false;
     };
   }
 };
+
+btnRender.addEventListener('click', () => {
+  const name = getNameForWorkingModel();
+  window.localStorage.setItem('nameOfModel', name);
+  const url = '/model-base/render';
+  window.location.pathname = url;
+});
 
 addOnClickForRadio();
