@@ -3,6 +3,35 @@ form {
   border: 3px solid #f1f1f1;
 }
 
+html,
+body {
+	height: 100%;
+}
+
+.wrapper {
+	display: table;
+	height: 100%;
+  width: 100%;
+}
+
+.footer{
+  height: 45vh;
+}
+
+.container {
+  padding: 16px;
+  display: table-row;
+	height: 100%;
+}
+
+.checkToken{
+  display:none;
+}
+
+.resetPassword{
+  display: none;
+}
+
 /* Full-width inputs */
 input[type=text], input[type=password] {
   width: 100%;
@@ -35,15 +64,15 @@ button:hover {
   background-color: #f44336;
 }
 
-/* Add padding to containers */
-.container {
-  padding: 16px;
-}
-
 /* The "Forgot password" text */
 span.psw {
   float: right;
   padding-top: 16px;
+}
+
+.forgot{
+  display: none;
+  width: 25%;
 }
 
 /* Change styles for span and cancel button on extra small screens */
