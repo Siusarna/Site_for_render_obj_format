@@ -13,5 +13,7 @@ module.exports = {
         expiresIn: '5m'
       }
     }
-  }
+  },
+  email: 'SiusarnaSite@gmail.com',
+  pass: "asdfghjkl;'12"
 };

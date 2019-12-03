@@ -1,27 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Simple Multer Upload Example</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="../css/login.css">
-  </head>
-  <body>
-    <form action="/login" enctype="multipart/form-data" method="post" name="login">
-      <div class="container">
+
+<head>
+  <title>Simple Multer Upload Example</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" type="text/css" href="../css/login.css" />
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="container">
+      <form action="/login" enctype="multipart/form-data" method="post" name="login">
         <label for="email"><b>Email</b></label>
-        <input type="text" placeholder="Enter Username" name="email" required>
+        <input type="text" placeholder="Enter Username" name="email" required />
 
         <label for="password"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="password" required>
-      </div>
-    </form>
-    <p id="error"></p>
-    <div class="container" style="background-color:#f1f1f1">
+        <input type="password" placeholder="Enter Password" name="password" required />
+      </form>
+      <p id="error"></p>
       <button type="submit" id="login">Login</button>
       <button type="button" id="cancel">Cancel</button>
-      <span class="psw">Forgot <a href="#">password?</a></span>
+      <a class="psw" href="#" id="forgot">Forgot password?</a>
     </div>
-    <script src="../js/login.js"></script>
-  </body>
+    <div class="footer">
+      <div id="status"></div>
+      <div class="forgot">
+        <form style="display:none; " method="post" name="forgot">
+          <label for="email"><b>Email</b></label>
+          <input type="text" placeholder="Enter Email" name="emailForResetPassword" required />
+        </form>
+        <button style="display:none" type="submit" name="forgot" id="btnForgot">
+          Reset Password
+        </button>
+      </div>
+      <div class="checkToken">
+        <form method="post" name="sendToken">
+          <label for="token"><b>Enter code from email</b></label>
+          <input type="text" placeholder="Enter code from email" name="token" required />
+        </form>
+        <button type="submit" name="forgot" id="btnSendAnswer">
+          Reset Password
+        </button>
+      </div>
+      <div class="resetPassword">
+        <form method="post" name="resetPassword">
+          <label><b>Password</b></label>
+          <input type="password" name="pass" required />
+
+          <label><b>Confirm password</b></label>
+          <input type="password" name="pass" required />
+        </form>
+        <button type="submit" name="forgot" id="btnResetPassword">
+          Reset Password
+        </button>
+      </div>
+    </div>
+  </div>
+  <script src="../js/login.js"></script>
+</body>
+
 </html>
