@@ -1,4 +1,9 @@
 language: node_js
 node_js:
-  - "10.16.0"
+- 10.16.0
 script: 'true'
+deploy:
+  provider: heroku
+  api_key:
+    secure: TTWo/ggcvbb280DeTbIl/bo/VN63WpQTM8g8VgvDnQTRRShQRg+G0nECTczU2KvsptM0eGeK+TIiPUtlEQILTwScEtitT7xnb6Vvw4b8nEdFiobVMc/CB1HDbvx/By3qep9AR3D1bwBkBZDxaviEf+QvV6fI8wv8tb253pHZDnh1Bsscbo2ku+/qO6YAQUrQJeNWqVZuhVHilfQAeQyql1TF5tv4n9DxP9HpkQqBQMJ/SAG6j3QkRlIfZmwymeQYe3bnkQL9Izrch+nBTPnR6Qf14/MM8z7FWiXoFUQNk18CHDE0vbzjzIHQQxalHbp+AT0IcfMlhmj4mJ6NGeUKsKmA6k/6PXRUJ9EoukIrh/GoZoPTymS0XiVDTdjbDB1T21H5ycTeYxDrgef0pWB/Gy9+gZC2PhVeLN7UgoJ3081FgZ3WnBk/DY9VJn2MCV0COAWIr8WAgPC6pCeu3tIkRdVtWSoIJLqsfklwHodo4WS8TAtYOvX3zs/vkxFSCXwFBI2m6q4giPPrBMQSJyjkiEcugeLfKSD0ASd5fdnh+SRI+ihGgfKFmgTE3NI353SgzI+g0NYpxTqU7Z9jDOIqb/zDQ1B5k6/8+ATbGFARWm5tRuIQGaC1Q1RZfDZ5GPWbqBX3zunhBRWCGVaEReMrJ7eR07RIBeCgwfFAT/QuWCo=
+  app: siusarna-site
