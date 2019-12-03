@@ -1,4 +1,4 @@
-const modelBase = require('../controllers/BaseOfModels.js');
+const modelBase = require('../controllers/baseOfModels.js');
 const multer = require('multer');
 
 const makeConfigForMulter = () => {
