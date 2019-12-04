@@ -1,27 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Simple Multer Upload Example</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="../css/login.css">
-  </head>
-  <body>
-    <form action="/signUp" enctype="multipart/form-data" method="post" name="signUp">
-        <label for="name"><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" name="name" required>
 
-        <label for="email"><b>Email</b></label>
-        <input type="text" placeholder="Enter Email" name="email" required>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Sign Up Form by Colorlib</title>
 
-        <label for="password"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="password" required>
-    </form>
-    <div class="container" style="background-color:#f1f1f1">
-      <button type="submit" id="login">Sign up</button>
-      <button type="button" class="cancelbtn">Cancel</button>
-      <span class="psw">Forgot <a href="#">password?</a></span>
-    </div>
-    <script src="../js/signUp.js"></script>
-  </body>
+  <!-- Font Icon -->
+  <link rel="stylesheet" href="../fonts/css/material-design-iconic-font.min.css">
+
+  <link rel="stylesheet" href="../css/signUp.css">
+</head>
+
+<body>
+  <div class="main">
+    <section class="signup">
+      <div class="container">
+        <div class="signup-content">
+          <div class="signup-form">
+            <h2 class="form-title">Sign up</h2>
+            <form name="signUp" class="register-form" id="register-form">
+              <div class="form-group">
+                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                <input type="text" required name="name" id="name" placeholder="Your Name" />
+                <span id="errorName"></span>
+              </div>
+              <div class="form-group">
+                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                <input type="email" required min="4" name="email" id="email" placeholder="Your Email" />
+                <span id="errorEmail"></span>
+              </div>
+              <div class="form-group">
+                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                <input type="password" required min="6" name="password" id="password" placeholder="Password" />
+                <span id="errorPass"></span>
+              </div>
+              <div class="form-group">
+                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                <input type="password" required min="6" name="re_pass" id="re_pass" placeholder="Repeat your password" />
+                <span id="errorRePass"></span>
+              </div>
+              <button class="btnSubmit" type="submit" id="register">Register</button>
+            </form>
+            <div id="error"></div>
+          </div>
+          <div class="signup-image">
+            <figure><img src="../img/signup-image.jpg" alt="sing up image"></figure>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script src="../js/signUp.js"></script>
+</body>
+
 </html>

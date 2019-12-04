@@ -19,7 +19,7 @@ require('./route/user_models.js')(app, io);
 app.get('/', (req, res) => {
   res.sendFile(path.resolve('public/html/home.html'));
 });
-console.log(config.mongoUri);
+
 mongoose
   .connect(config.mongoUri, {
     useNewUrlParser: true,
