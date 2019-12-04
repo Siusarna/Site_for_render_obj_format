@@ -2,58 +2,50 @@
 <html lang="en">
 
 <head>
-  <title>Simple Multer Upload Example</title>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" type="text/css" href="../css/login.css" />
+  <title>Siusarna-site</title>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../img/icons/favicon.ico" />
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../fonts/css/material-design-iconic-font.min1.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../css/login.css">
+  <!--===============================================================================================-->
 </head>
 
 <body>
-  <div class="wrapper">
-    <div class="container">
-      <form action="/login" enctype="multipart/form-data" method="post" name="login">
-        <label for="email"><b>Email</b></label>
-        <input type="text" placeholder="Enter Username" name="email" required />
+  <div class="limiter">
+    <div class="container-login" style="background-image: url('../img/bg-01.jpg');">
+      <div class="wrap-login">
+        <form class="login-form" name="login">
+          <span class="login-form-logo">
+            <i class="zmdi zmdi-landscape"></i>
+          </span>
+          <span class="login-form-title">Log in</span>
+          <div class="wrap-input">
+            <input class="input" name="email" placeholder="Email">
+            <span class="focus-input" data-placeholder="&#xf207;"></span>
+          </div>
 
-        <label for="password"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="password" required />
-      </form>
-      <p id="error"></p>
-      <button type="submit" id="login">Login</button>
-      <button type="button" id="cancel">Cancel</button>
-      <a class="psw" href="#" id="forgot">Forgot password?</a>
-    </div>
-    <div class="footer">
-      <div id="status"></div>
-      <div class="forgot">
-        <form style="display:none; " method="post" name="forgot">
-          <label for="email"><b>Email</b></label>
-          <input type="text" placeholder="Enter Email" name="emailForResetPassword" required />
-        </form>
-        <button style="display:none" type="submit" name="forgot" id="btnForgot">
-          Reset Password
-        </button>
-      </div>
-      <div class="checkToken">
-        <form method="post" name="sendToken">
-          <label for="token"><b>Enter code from email</b></label>
-          <input type="text" placeholder="Enter code from email" name="token" required />
-        </form>
-        <button type="submit" name="forgot" id="btnSendAnswer">
-          Reset Password
-        </button>
-      </div>
-      <div class="resetPassword">
-        <form method="post" name="resetPassword">
-          <label><b>Password</b></label>
-          <input type="password" name="pass" required />
+          <div class="wrap-input">
+            <input class="input" type="password" name="password" placeholder="Password">
+            <span class="focus-input" data-placeholder="&#xf191;"></span>
+          </div>
 
-          <label><b>Confirm password</b></label>
-          <input type="password" name="pass" required />
+          <div class="error">
+            <p id="error"></p>
+          </div>
         </form>
-        <button type="submit" name="forgot" id="btnResetPassword">
-          Reset Password
-        </button>
+        <div class="container-login-form-btn">
+          <button class="login-form-btn" id="login" type="submit">
+            Login
+          </button>
+        </div>
+
+        <div class="text-center">
+          <a class="txt1" href="/login/forgot">
+            Forgot Password?
+          </a>
+        </div>
       </div>
     </div>
   </div>

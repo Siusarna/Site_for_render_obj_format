@@ -51,7 +51,7 @@ const createDataForBody = (formData) => {
 
 const checkValidAllInput = () => {
   let flag = true;
-  if (rePass.value !== pass.value && !pass.validity.valid) {
+  if (rePass.value !== pass.value || !pass.validity.valid) {
     errorRePass.innerText = 'Passwords must match.';
     errorRePass.className = 'error active';
     flag = false;
