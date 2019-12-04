@@ -35,7 +35,7 @@ const createDataForBody = (formData) => {
   return JSON.stringify(data);
 };
 
-const processingError = () => {
+const processingError = (result) => {
   const pForError = document.getElementById('error');
   pForError.textContent = result.message;
   pForError.style.color = 'red';
@@ -72,7 +72,7 @@ document.getElementById('login').addEventListener('click', async () => {
     if (response.status === 200) {
       processingStatusOk(result);
     } else {
-      processingError();
+      processingError(result);
     }
   });
 });

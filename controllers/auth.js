@@ -16,7 +16,8 @@ const signIn = (req, res) => {
     .exec()
     .then((user) => {
       if (!user) {
-        res.status(401).json({ message: 'User does not exist!' });
+        console.log('!user');
+        return res.status(401).json({ message: 'User does not exist!' });
       }
       const isValid = password === user.password;
       if (isValid) {
@@ -25,7 +26,9 @@ const signIn = (req, res) => {
         res.status(401).json({ message: 'Invalid credentials!' });
       }
     })
-    .catch((err) => res.status(500).json({ message: err.message }));
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
+    });
 };
 
 const getLoginPage = (req, res) => {
