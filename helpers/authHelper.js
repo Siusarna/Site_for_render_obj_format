@@ -129,7 +129,7 @@ const setTokenInCookie = (newTokens, res) => {
 
 const processingError = async (req, res, status, message) => {
   if (message !== 'Token expired!') {
-    return res.redirect('/login');
+    redirectForSingIN(req, res);
   }
   refreshToken(req.cookies.refreshToken)
     .then((newTokens) => {

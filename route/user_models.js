@@ -1,5 +1,6 @@
 const modelBase = require('../controllers/baseOfModels.js');
 const multer = require('multer');
+const express = require('express');
 
 const makeConfigForMulter = () => {
   return {
@@ -19,16 +20,20 @@ const upload = multer({
 
 module.exports = (app, io) => {
   io.on('connection', (socket) => {});
+  const route = express.Router();
+  route.use(modelBase.processingAccess);
 
-  app.get('/model-base/', modelBase.loadPage);
-  app.post(
-    '/model-base/',
+  route.get('/', modelBase.loadPage);
+  route.post(
+    '/',
     upload.single('file-to-upload'),
     modelBase.addNewModelInDB
   );
-  app.delete('/model-base/', modelBase.deletModelByName);
-  app.get('/model-base/render', modelBase.pageForRender);
-  app.post('/model-base/render', (req, res) => {
+  route.delete('/', modelBase.deletModelByName);
+  route.get('/render', modelBase.pageForRender);
+  route.post('/render', (req, res) => {
     modelBase.renderModel(req, res, io);
   });
+
+  app.use('/model-base', route);
 };

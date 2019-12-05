@@ -15,12 +15,13 @@ const getInfoFromDbAndRenderPage = (res, payload = '0') => {
     });
 };
 
-const processingAccess = (req, res) => {
+const processingAccess = (req, res, next) => {
   const userToken = req.cookies.accessToken;
   return new Promise((resolve, reject) => {
     try {
       const payload = authHelper.checkToken(userToken);
-      resolve(payload);
+      req.payload = payload;
+      next();
     } catch (err) {
       const { status, message } = err;
       reject(authHelper.processingError(req, res, status, message));
@@ -29,9 +30,8 @@ const processingAccess = (req, res) => {
 };
 
 const loadPage = (req, res) => {
-  processingAccess(req, res).then((payload) => {
-    getInfoFromDbAndRenderPage(res, payload);
-  });
+  const { payload } = req;
+  getInfoFromDbAndRenderPage(res, payload);
 };
 
 const deleteModelFromFolder = (name) => {
@@ -41,48 +41,44 @@ const deleteModelFromFolder = (name) => {
 };
 
 const addNewModelInDB = (req, res) => {
-  processingAccess(req, res).then((payload) => {
-    const { userId } = payload;
-    const fileName = req.file.originalname;
-    const data = render.readOBJ(fileName);
-    deleteModelFromFolder(fileName);
-    const model = new Model({
-      userId: userId,
-      nameOfModel: fileName,
-      data: JSON.stringify(data)
-    });
-    try {
-      model.save();
-      res.status(200).json('Successfully added');
-    } catch (e) {
-      res.status(400).json(e);
-    }
+  const { payload } = req;
+  const { userId } = payload;
+  const fileName = req.file.originalname;
+  const data = render.readOBJ(fileName);
+  deleteModelFromFolder(fileName);
+  const model = new Model({
+    userId: userId,
+    nameOfModel: fileName,
+    data: JSON.stringify(data)
   });
+  try {
+    model.save();
+    res.status(200).json('Successfully added');
+  } catch (e) {
+    res.status(400).json(e);
+  }
 };
 
 const deletModelByName = (req, res) => {
-  processingAccess(req, res).then((payload) => {
-    const { userId } = payload;
-    const fileName = req.query.nameOfModel;
-    const options = {
-      userId,
-      nameOfModel: fileName
-    };
-    Model.findOneAndRemove(options)
-      .exec()
-      .then(() => {
-        res.status(200).json('Successfully delete');
-      })
-      .catch((err) => {
-        res.status(400).json(err);
-      });
-  });
+  const { payload } = req;
+  const { userId } = payload;
+  const fileName = req.query.nameOfModel;
+  const options = {
+    userId,
+    nameOfModel: fileName
+  };
+  Model.findOneAndRemove(options)
+    .exec()
+    .then(() => {
+      res.status(200).json('Successfully delete');
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 };
 
 const pageForRender = (req, res) => {
-  processingAccess(req, res).then((payload) => {
-    res.render('pageForRender/pageForRender');
-  });
+  res.render('pageForRender/pageForRender');
 };
 
 const getModelFromDB = (nameOfModel, userId) => {
@@ -126,16 +122,14 @@ const createImage = (threeDModel, options, data) => {
 };
 
 const renderModel = (req, res, io) => {
-  processingAccess(req, res)
-    .then((payload) => {
-      return getTimeAndOption(req.body, payload.userId);
-    })
-    .then((result) => {
-      const [processingTime, options, arrayOfTriangle] = result;
-      io.sockets.emit('timer', processingTime);
-      const dataForSend = createImage(arrayOfTriangle, options, req.body);
-      res.send(dataForSend);
-    });
+  new Promise((resolve, reject) => {
+    resolve(getTimeAndOption(req.body, req.payload.userId));
+  }).then((result) => {
+    const [processingTime, options, arrayOfTriangle] = result;
+    io.sockets.emit('timer', processingTime);
+    const dataForSend = createImage(arrayOfTriangle, options, req.body);
+    res.send(dataForSend);
+  });
 };
 
 module.exports = {
@@ -143,5 +137,6 @@ module.exports = {
   addNewModelInDB,
   deletModelByName,
   pageForRender,
-  renderModel
+  renderModel,
+  processingAccess
 };
