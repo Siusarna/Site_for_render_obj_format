@@ -45,6 +45,11 @@ body {
 .item_third {
   align-self: center;
   grid-area: item_third;
+  background: none;
+  border: 0;
+  font-size: 23px;
+  margin-bottom: 64px;
+  cursor: pointer;
 }
 
 .logo {
