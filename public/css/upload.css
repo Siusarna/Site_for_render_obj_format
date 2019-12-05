@@ -1,26 +1,82 @@
-form {
-  width: 15vw;
+body {
+  background-image: url('../img/take_file_bg.png');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  color: white;
 }
+
+.form {
+  float: left;
+}
+
+.field {
+  clear: both;
+  text-align: left;
+  line-height: 25px;
+}
+
 input {
   padding: 5px;
   margin: 5px;
   border-radius: 5px;
+  min-width: 12vw;
 }
+
 button {
-  width: 25vw;
-  background-color: RGB(255 0 0);
+  font-size: 16px;
+  line-height: 1.2;
   color: white;
-  height: 37px;
-  font-weight: bold;
-  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 40px;
+  margin-top: 30px;
+  margin-left: 1.1vw;
+  height: 55px;
+  border-radius: 16px;
+  background: linear-gradient(#e66465, #9198e5);
+  cursor: pointer;
+  border: none;
+  width: 11vw;
 }
+
 button[name='render'] {
   background-color: RGB(0 255 0);
 }
-hr {
-  height: 2px;
-  background: black;
+
+.module-border-wrap {
+  display: none;
+  position: absolute;
+  top: 30vh;
+  left: 60vw;
+  max-width: max-content;
+  background: linear-gradient(to right, red, purple);
+  padding: 9px;
 }
-label {
-  margin-left: 5px;
+
+.error {
+  width  : 100%;
+  padding: 0;
+  margin-left: 2vw;
+  color: white;
+  background-color: #900;
+  border-radius: 0 0 5px 5px;
+
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.error.active {
+  padding: 0.3em;
+}
+
+span[name='errorFileToUpload']{
+  margin-left: -2.2vw;
+}
+
+.time{
+  margin-left: 45vw;
+  font-size: 18px;
+  font-family: cursive;
+  display: none
 }
