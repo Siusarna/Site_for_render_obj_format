@@ -1,8 +1,24 @@
 /* eslint no-undef: 0 */
-const render = document.getElementsByName('render')[0];
+const cameraPos = document.getElementsByName('camera_pos')[0];
+const width = document.getElementsByName('width')[0];
+const height = document.getElementsByName('height')[0];
+const fov = document.getElementsByName('fov')[0];
+const lightPos = document.getElementsByName('light_pos')[0];
+const lightIntensity = document.getElementsByName('light_intensity')[0];
+const errorCameraPos = document.getElementById('errorCameraPos');
+const errorWidth = document.getElementById('errorWidth');
+const errorHeight = document.getElementById('errorHeight');
+const errorFov = document.getElementById('errorFov');
+const errorLightPos = document.getElementById('errorLightPos');
+const errorLightIntensity = document.getElementById('errorLightIntensity');
+const render = document.getElementById('render');
+
+const containerForImage = document.getElementById('image');
+
 const socket = io();
 
 const startTimer = (data, display) => {
+  document.getElementsByClassName('time')[0].style.display = 'block';
   let timer = data.calculatedTime;
   let minutes, seconds;
   document.querySelector('#observationalError').textContent =
@@ -26,8 +42,92 @@ const startTimer = (data, display) => {
 socket.on('timer', (data) => {
   const display = document.querySelector('#time');
   startTimer(data, display);
-  console.log(data);
 });
+
+// valid
+
+const isVector = (str) => {
+  const re = /-?\d+\s-?\d+\s-?\d+/;
+  if (str.match(re)) return true;
+  return false;
+};
+
+cameraPos.addEventListener('input', () => {
+  if (isVector(cameraPos.value)) {
+    errorCameraPos.innerText = '';
+    errorCameraPos.className = 'error';
+  }
+});
+
+width.addEventListener('input', () => {
+  if (width.value >= 50 && width.value <= 900) {
+    errorWidth.innerText = '';
+    errorWidth.className = 'error';
+  }
+});
+
+height.addEventListener('input', () => {
+  if (height.value >= 50 && height.value <= 900) {
+    errorHeight.innerText = '';
+    errorHeight.className = 'error';
+  }
+});
+
+fov.addEventListener('input', () => {
+  if (fov.value >= 50 && fov.value <= 170) {
+    errorFov.innerText = '';
+    errorFov.className = 'error';
+  }
+});
+
+lightPos.addEventListener('input', () => {
+  if (isVector(lightPos.value)) {
+    errorLightPos.innerText = '';
+    errorLightPos.className = 'error';
+  }
+});
+
+lightIntensity.addEventListener('input', () => {
+  if (lightIntensity.value > 0 && lightIntensity.value <= 5) {
+    errorLightIntensity.innerText = '';
+    errorLightIntensity.className = 'error';
+  }
+});
+
+const checkAllfields = () => {
+  let flag = true;
+  if (!isVector(cameraPos.value)) {
+    errorCameraPos.innerText = 'Enter the value as in the example';
+    errorCameraPos.className = 'error active';
+    flag = false;
+  }
+  if (width.value < 50 || width.value > 900) {
+    errorWidth.innerText = 'Width can be from 50 to 900';
+    errorWidth.className = 'error active';
+    flag = false;
+  }
+  if (height.value < 50 || height.value > 900) {
+    errorHeight.innerText = 'Height can be from 50 to 900';
+    errorHeight.className = 'error active';
+    flag = false;
+  }
+  if (fov.value < 50 || fov.value > 170) {
+    errorFov.innerText = 'Fov can be from 50 to 170';
+    errorFov.className = 'error active';
+    flag = false;
+  }
+  if (!isVector(lightPos.value)) {
+    errorLightPos.innerText = 'Enter the value as in the example';
+    errorLightPos.className = 'error active';
+    flag = false;
+  }
+  if (lightIntensity.value <= 0 || lightIntensity.value > 5) {
+    errorLightIntensity.innerText = 'Light intensity can be from 0 to 5';
+    errorLightIntensity.className = 'error active';
+    flag = false;
+  }
+  return flag;
+};
 
 const createDataForBody = (formData) => {
   const data = {};
@@ -40,11 +140,10 @@ const createDataForBody = (formData) => {
 };
 
 render.addEventListener('click', () => {
+  if (!checkAllfields()) return;
   const formData = new FormData(document.forms.options);
   const url = '/model-base/render';
-
   const data = createDataForBody(formData);
-
   const options = {
     method: 'POST',
     headers: {
@@ -52,13 +151,13 @@ render.addEventListener('click', () => {
     },
     body: JSON.stringify(data)
   };
-  console.log(data);
   fetch(url, options)
     .then((response) => response.json())
     .then((result) => {
       const data = result.data;
       const image = new Image();
       image.src = 'data:image/bmp;base64,' + data;
-      document.body.appendChild(image);
+      containerForImage.appendChild(image);
+      containerForImage.style.display = 'block';
     });
 });

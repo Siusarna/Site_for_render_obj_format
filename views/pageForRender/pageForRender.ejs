@@ -9,22 +9,43 @@
     <title>Siusarna-site</title>
   </head>
   <body>
-    <hr>
-    <form action="/upload" enctype="multipart/form-data" method="post" name="options" >
-      <input type="text" required name="camera_pos" placeholder="camera_pos: x y z" value="0 -2 0" />
-      <input type="text" required name="width" placeholder="width"  value="50" />
-      <input type="text" required name="height" placeholder="height" value="50" />
-      <input type="text" required name="fov" placeholder="fov in degrees" value="150" />
-      <label>Object color</label>
-      <input type="color" required name="objectColor" value="#0489e1" />
-      <label>Background color</label>
-      <input type="color" required name="backgroundColor" value="#eaff05" />
-      <input type="text" required name="light_pos" placeholder="light position: x y z" value="0 -2 0" />
-      <input type="text" required name="light_intensity" placeholder="light intensity:" value="1" />
-    </form>
-    <button type="submit" name="render">Render</button>
-    <hr>
-    <div>Approximate end time of data processing <span id="time">00:00</span> ± <span id="observationalError">00:00</span> minutes!</div>
+    <div class="form">
+      <form action="/upload" enctype="multipart/form-data" method="post" name="options" >
+        <div class="field">
+          <input type="text" required name="camera_pos" placeholder="camera_pos: x y z" />
+          <span id="errorCameraPos"></span>
+        </div>
+        <div class="field">
+          <input type="text" required name="width" placeholder="width" />
+          <span id="errorWidth"></span>
+        </div>
+        <div class="field">
+          <input type="text" required name="height" placeholder="height"/>
+          <span id="errorHeight"></span>
+        </div>
+        <div class="field">
+          <input type="text" required name="fov" placeholder="fov in degrees"/>
+          <span id="errorFov"></span>
+        </div>
+        <div class="field">
+          <input type="color" title="Object color" required name="objectColor" value="#0489e1"/>
+        </div>
+        <div class="field">
+          <input type="color" title="Background color" required name="backgroundColor" value="#eaff05" />
+        </div>
+        <div class="field">
+          <input type="text" required name="light_pos" placeholder="light position: x y z" />
+          <span id="errorLightPos"></span>
+        </div>
+        <div class="field">
+          <input type="text" required name="light_intensity" placeholder="light intensity:"/>
+          <span id="errorLightIntensity"></span>
+        </div>
+      </form>
+      <button type="submit" id="render">Upload</button>
+    </div>
+    <div class="time">Approximate end time of data processing <span id="time">00:00</span> ± <span id="observationalError">00:00</span> second!</div>
+    <div class="module-border-wrap" id="image"></div>
     <script src="../js/pageForRender.js"></script>
   </body>
 </html>
