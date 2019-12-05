@@ -15,6 +15,15 @@ body {
   line-height: 25px;
 }
 
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
 input {
   padding: 5px;
   margin: 5px;
@@ -22,7 +31,7 @@ input {
   min-width: 12vw;
 }
 
-button {
+button, .inputfile + label {
   font-size: 16px;
   line-height: 1.2;
   color: white;
@@ -40,8 +49,17 @@ button {
   width: 11vw;
 }
 
-button[name='render'] {
-  background-color: RGB(0 255 0);
+.inputfile + label{
+  width: 13.1vw;
+  margin-left: 0vw;
+  margin-top: 10px;
+  padding: 0px;
+  height: 40px;
+}
+
+.field[name='file']{
+  display: flex;
+  margin-bottom: 5px;
 }
 
 .module-border-wrap {
@@ -71,7 +89,10 @@ button[name='render'] {
 }
 
 span[name='errorFileToUpload']{
-  margin-left: -2.2vw;
+  margin-left: 2.5vw;
+  margin-top: 1.3vh;
+  max-width: fit-content;
+  height: 5vh;
 }
 
 .time{

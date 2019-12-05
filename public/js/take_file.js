@@ -149,6 +149,12 @@ const checkAllfields = () => {
   return flag;
 };
 
+const makeClearContainer = () => {
+  while (containerForImage.firstChild) {
+    containerForImage.removeChild(containerForImage.firstChild);
+  }
+};
+
 btnUpload.addEventListener('click', () => {
   if (!checkAllfields()) return;
   const formData = new FormData(document.forms.options);
@@ -160,6 +166,7 @@ btnUpload.addEventListener('click', () => {
   fetch(url, options)
     .then((response) => response.json())
     .then((result) => {
+      makeClearContainer();
       const data = result.data;
       const image = new Image();
       image.src = 'data:image/bmp;base64,' + data;

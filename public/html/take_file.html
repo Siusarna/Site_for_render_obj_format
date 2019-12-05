@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Simple Multer Upload Example</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="../css/upload.css">
@@ -11,8 +10,9 @@
   <body>
     <div class="form">
       <form action="/upload" enctype="multipart/form-data" method="post" name="options" >
-        <div class="field">
-          <input type="file" id="fileToUpload" name="file-to-upload">
+        <div class="field" name='file'>
+          <input type="file" id="fileToUpload" name="file-to-upload" class="inputfile" />
+          <label for="file"><strong>Choose a file</strong></label>
           <span name="errorFileToUpload" id="errorFileToUpload"></span>
         </div>
         <div class="field">
