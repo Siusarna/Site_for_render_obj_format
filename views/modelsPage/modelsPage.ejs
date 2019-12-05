@@ -12,13 +12,14 @@
   <div id="status"></div>
   <h1>My models</h1>
   <form enctype="multipart/form-data" name="addNewModel" >
-    <input type="file" name="file-to-upload">
+    <input type="file" name="file-to-upload" id="file" class="inputfile" />
+    <label for="file"><strong>Choose a file</strong></label>
   </form>
-  <button class="butSave" type="submit" id="upload">Save</button>
-  <br>
-  <button class="butDelet" disabled='true' type="submit" id="delete">Delet model</button>
-  <br>
-  <button class="butRender" disabled='true' type="submit" id="render">Render model</button>
+  <div class="buttons">
+    <button class="butSave" type="submit" id="upload">Save</button>
+    <button class="butDelet" disabled='true' type="submit" id="delete">Delet model</button>
+    <button class="butRender" disabled='true' type="submit" id="render">Render model</button>
+  </div>
   <table id="tableWithModels" class="table">
     <tr>
       <td class="col1">Status</td>

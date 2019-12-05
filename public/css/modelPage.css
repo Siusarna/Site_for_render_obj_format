@@ -1,5 +1,47 @@
-.butSave {
-  margin: 20px;
+body {
+  background-image: url('../img/bg_modelPage.jpg');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  color: white;
+}
+
+h1{
+  text-align: center;
+}
+
+div[id='status']{
+  font-size: 25px;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+button, .inputfile + label{
+  font-size: 16px;
+  line-height: 1.2;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 40px;
+  margin-top: 5px;
+  margin-left: 1.1vw;
+  height: 55px;
+  border-radius: 16px;
+  background: linear-gradient(#e66465, #9198e5);
+  cursor: pointer;
+  border: none;
+  width: 11vw;
+}
+
+button{
+  width: 16vw;
 }
 
 .table {
@@ -12,7 +54,10 @@
   border: 16px solid #ece9e0;
   border-radius: 20px;
   width: 50%;
-  margin: 20px auto;
+  margin: 20px;
+  position: absolute;
+  top: 15vh;
+  left: 29vw;
 }
 
 .table tr {
