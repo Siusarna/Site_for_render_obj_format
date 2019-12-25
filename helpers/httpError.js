@@ -1,5 +1,5 @@
 class HttpError extends Error {
-  constructor(status = 'bar', message, ...params) {
+  constructor (status = 'bar', message, ...params) {
     // Передати залишкові параметри (в тому числі параметри розробника) до батьківського конструктора
     super(...params);
 
